@@ -1,0 +1,23 @@
+{
+  "root": true,
+  "plugins": ["testcafe", "jest"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:vue/strongly-recommended",
+    "plugin:prettier/recommended",
+    "plugin:testcafe/recommended",
+    "plugin:jest/recommended"
+  ],
+  "rules": {
+    "no-console": "off",
+    "prettier/prettier": "off",
+    "vue/singleline-html-element-content-newline": "off",
+    "vue/max-attributes-per-line": "off",
+    "vue/html-closing-bracket-spacing": "off",
+    "vue/html-self-closing": "off",
+    "vue/mustache-interpolation-spacing": "off",
+    "vue/multiline-html-element-content-newline": "off",
+    "vue/attribute-hyphenation": "off",
+    "eqeqeq": ["error", "smart"]
+  }
+}
