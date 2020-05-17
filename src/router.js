@@ -5,7 +5,7 @@ import Word from './views/word/index.vue';
 import AddWord from './views/addWord/index.vue';
 import MyWord from './views/myWord/index.vue';
 import Page from './components/page/index.vue';
-import Phrase from './views/phrase/index.vue';
+import Record from './views/record/index.vue';
 
 Vue.use(Router);
 
@@ -39,9 +39,9 @@ export default new Router({
           component: MyWord,
         },
         {
-          path: '/phrase',
-          name: 'phrase',
-          component: Phrase,
+          path: '/record',
+          name: 'record',
+          component: Record,
         },
       ],
     },

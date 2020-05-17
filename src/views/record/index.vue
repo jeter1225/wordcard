@@ -1,9 +1,9 @@
 <template>
-  <div>this is phrase</div>
+  <div>this is record</div>
 </template>
 <script>
 export default {
-  name: 'Phrase',
+  name: 'Record',
 };
 </script>
 <style lang="stylus"></style>
