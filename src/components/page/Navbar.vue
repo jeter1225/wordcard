@@ -40,6 +40,9 @@ export default {
           case '/word':
             this.defaultActive = '2';
             break;
+		  case '/addWord':
+            this.defaultActive = '2';
+            break;
           case '/phrase':
             this.defaultActive = '3';
             break;

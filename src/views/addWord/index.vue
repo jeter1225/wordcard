@@ -2,14 +2,10 @@
   <div>
     <el-row>
       <el-col :span="12">
-	    <div><h1 style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;">Word</h1></div>
+	    <div><h1 style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;">addWord</h1></div>
 	  </el-col>
 	  <el-col :span="12">
-	    <div style="display: flex; justify-content: center; align-items: center">
-		  <router-link to="/addWord">
-		    <el-button type="info" onclick="" style="display: inline-block; margin-top: 50px; width: 60px; height: 60px; font-size: 35px;" icon="el-icon-plus" circle></el-button>
-		  </router-link>
-		</div>
+	    <div style="display: flex; justify-content: center; align-items: center"> <el-button type="info" style="display: inline-block; margin-top: 50px; width: 60px; height: 60px; font-size: 35px;" icon="el-icon-plus" circle></el-button></div>
 	  </el-col>
   
     </el-row>
@@ -58,7 +54,7 @@
 </template>
 <script>
 export default {
-  name: 'Word',
+  name: 'addWord',
 };
 </script>
 <style lang="stylus">
