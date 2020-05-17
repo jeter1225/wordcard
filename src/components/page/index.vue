@@ -44,6 +44,8 @@ export default {
           return 'Homepage';
         case 'word':
           return 'Word';
+        case 'phrase':
+          return 'Phrase';
         default:
           return '';
       }

@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Homepage from './views/homepage/index.vue';
 import Word from './views/word/index.vue';
 import Page from './components/page/index.vue';
+import Phrase from './views/phrase/index.vue';
 
 Vue.use(Router);
 
@@ -24,6 +25,11 @@ export default new Router({
           path: '/word',
           name: 'word',
           component: Word,
+        },
+        {
+          path: '/phrase',
+          name: 'phrase',
+          component: Phrase,
         },
       ],
     },

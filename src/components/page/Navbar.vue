@@ -9,6 +9,7 @@
     >
       <el-menu-item index="1">Home</el-menu-item>
       <el-menu-item index="2">Word</el-menu-item>
+      <el-menu-item index="3">Phrase</el-menu-item>
     </el-menu>
     <div
       style="position: relative; top: -45px; left: 20px; color: #494949; font-size: 25px;width: 500px"
@@ -39,6 +40,9 @@ export default {
           case '/word':
             this.defaultActive = '2';
             break;
+          case '/phrase':
+            this.defaultActive = '3';
+            break;
           case '/homepage':
           default:
             this.defaultActive = '1';
@@ -58,6 +62,9 @@ export default {
           break;
         case '2':
           this.$router.push('/word');
+          break;
+        case '3':
+          this.$router.push('/phrase');
           break;
         default:
           this.$router.push('/');
