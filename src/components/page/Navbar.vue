@@ -3,17 +3,19 @@
     <el-menu
       :default-active="defaultActive"
       @select="onMenuSelected"
-      active-text-color="black"
+      active-text-color="white"
       mode="horizontal"
-      text-color="black"
+	  background-color= "#4A4E69"
+      text-color="white"
+	  style="font-family:Microsoft JhengHei; font-weight: bold"
     >
       <el-menu-item index="1">Home</el-menu-item>
       <el-menu-item index="2">Word</el-menu-item>
       <el-menu-item index="3">Record</el-menu-item>
     </el-menu>
     <div
-      style="position: relative; top: -45px; left: 20px; color: #494949; font-size: 25px;width: 500px"
-    >Wordcard</div>
+      style="position: relative; top: -45px; left: 20px; color: white; font-size: 20px;; font-family:Microsoft JhengHei; width: 500px; font-weight: bold"
+    >WORDCARD</div>
   </div>
 </template>
 
@@ -41,6 +43,9 @@ export default {
             this.defaultActive = '2';
             break;
 		  case '/addWord':
+            this.defaultActive = '2';
+            break;
+		  case '/myWord':
             this.defaultActive = '2';
             break;
           case '/record':

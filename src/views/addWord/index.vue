@@ -75,7 +75,9 @@
 	<div class="homepage_line_color" style="margin:0px auto; width: 70%"></div>
 	
 	<div style="margin-top: 50px;">
+	  <router-link to="/Word" style="text-decoration:none;">
 	  <el-button type="info" style="position:absolute; right:17%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" icon="el-icon-plus" circle></el-button>
+	  </router-link>
 	</div>
 	
 	<br>
