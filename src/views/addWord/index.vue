@@ -3,7 +3,7 @@
     <div style="margin-bottom: 50px;">
     <el-row>
       <el-col :span="12">
-	    <div><h1 style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;">addWord</h1></div>
+	    <div><h1 style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;">Word</h1></div>
 		<div class="homepage_line_color"></div>
 	  </el-col>
     </el-row>
