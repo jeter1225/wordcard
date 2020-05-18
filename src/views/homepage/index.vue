@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class="homepage_font_style">HOMEPAGE</div>
+    <div><h1 style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;">HOMEPAGE</h1></div>
     <div class="homepage_line_color"></div>
     <el-row>
       <el-col :span="15">
         <div class="everyone_like_to_use">
-          <div class="everyone_like_to_use_title">大家都愛用</div>
+          <div><h1 style="font-size: 35px; font-family:Microsoft JhengHei; text-align: center; margin: 20px;">大家都愛用</h1></div>
           <div class="homepage_line_color2"></div>
         </div>
       </el-col>
@@ -14,7 +14,7 @@
       </el-col>
       <el-col :span="8">
         <div class="homepage_bgcolor_white">
-          <div class="latest_news">最新公告</div>
+          <div><h1 style="font-size: 35px; font-family:Microsoft JhengHei; text-align: center; margin: 20px;">最新公告</h1></div>
         </div>
       </el-col>
     </el-row>
@@ -30,10 +30,12 @@ export default {
   background-color: white
   height:500px
   margin-top:40px
+  overflow : auto
 }
 .homepage_line_color {
   background-color: black
   height:3px
+  margin-top : -2%
 }
 .homepage_line_color2 {
   background-color: gray
@@ -59,20 +61,10 @@ export default {
   overflow : auto
 }
 .homepage_font_style {
+  font-family : Microsoft JhengHei
   color : black
   font-size : 40px
   margin-top : 3%
 }
-.title1 {
-  color : white
-  font-size : 50px
-  padding-top : 3%
-  padding-left : 3%
-}
-.title2 {
-  color : black
-  font-size : 40px
-  margin_left : 50%
-  margin-top : 3%
-}
+
 </style>
