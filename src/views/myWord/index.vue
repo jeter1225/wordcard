@@ -6,9 +6,21 @@
 	<br>
 	<br>
 	
-	<el-carousel indicator-position="outside" arrow="always" :autoplay="false" style="width: 70%; margin:0px auto;">
-      <el-carousel-item v-for="item in 4" :key="item" style="background-color: #F2E9E4;">
-        <h3 style="font-size: 40px; font-family:Microsoft JhengHei; font-weight: bold;">{{ item }}</h3>
+	<el-carousel indicator-position="outside" arrow="always" :autoplay="false" style="width: 70%; margin:0px auto;" >
+      <el-carousel-item v-for="item in 4" :key="item">
+	  
+        <el-row style="font-size: 40px; font-family:Microsoft JhengHei; font-weight: bold; text-align:center; line-height:200px;">
+          <el-col :span="12">
+            <div><h3>{{ english[item - 1] }}</h3></div>
+		  </el-col>
+		  <el-col :span="1">
+            <div class="headerDivider"></div> 
+          </el-col>
+          <el-col :span="12">
+            <div><h3>{{ chinese[item - 1] }}</h3></div>
+          </el-col>
+        </el-row>
+		
       </el-carousel-item>
     </el-carousel>
 	
@@ -76,12 +88,25 @@ export default {
   data(){
 	return {
 	  word: "",
-	  definition: ""
+	  definition: "",
+	  english: ["apple", "banana", "orange", "tomato"],
+	  chinese: ["蘋果", "香蕉", "橘子", "番茄"]
 	}
   }
 };
 </script>
 <style lang="stylus">
+.headerDivider { 
+    border-left:1px solid #38546d; 
+    border-right:1px solid #16222c; 
+    height:98%; 
+    position:absolute; 
+    top:2%; 
+} 
+
+.el-carousel__item {
+	background-color: #F2E9E4;
+}
 
 .el-card {
 	max-width: 350px;
