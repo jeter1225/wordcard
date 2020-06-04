@@ -48,9 +48,10 @@
 	
 	<div style="margin-top: 50px;">
 	  
-	  <router-link to="/Word" style="text-decoration:none;">
 	  <el-button type="info" style="position:absolute; right:17%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" round @click="addWordCard()">新增小卡</el-button>
-	  </router-link>
+	  <!--
+	  <router-link to="/Word" style="text-decoration:none;">
+	  </router-link> -->
 	</div>
 	
 	<br>
@@ -78,8 +79,8 @@ export default {
 	  this.addWordList.push({word: "", definition: ""})
 	},
 	async addWordCard() {
-		var temp = {user:"jeter1225"}
-		await fetch("http://localhost:3002/api/getWordcard", {
+		var temp = {user:"jeter1225", wordcardName:"GRE100"}
+		await fetch("http://localhost:3002/api/getWord", {
                 method: 'POST',
                 body: JSON.stringify(temp),
                 headers: {
@@ -90,7 +91,7 @@ export default {
                 if(originData.success) {
                     console.log(originData)
                     if(originData.data) {
-                        alert(originData.data[0].name);
+                        alert(originData.data[0].word);
                     }
                 }
                 else

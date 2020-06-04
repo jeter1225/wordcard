@@ -11,7 +11,7 @@ const DataSchema = new Schema(
       type: String,
     },
     numberOfWords: {
-      type: String,
+      type: Number,
     },
   }
 );
