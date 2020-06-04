@@ -8,6 +8,8 @@ const methodOverride = require('method-override');
 
 Grid.mongo = mongoose.mongo;
 const User = require("./user");
+const Wordcard = require("./wordcard");
+const Word = require("./word");
 
 const API_PORT = 3002;
 const app = express();
@@ -15,7 +17,7 @@ app.use(cors());
 const router = express.Router();
 
 // this is our MongoDB database
-const dbRoute = "mongodb+srv://SDM2020:secure1234@cluster0-kenyq.mongodb.net/test?retryWrites=true&w=majority";
+const dbRoute = "mongodb+srv://SDM2020:secure1234@cluster0-kenyq.mongodb.net/SDM2020?retryWrites=true&w=majority";
 
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
@@ -46,6 +48,25 @@ router.post("/getUser", (req, res) => {
   const {name} = req.body;
   var a = {name:name}
   User.find(a, (err, data) => {
+    if (err) return res.json({ success: false, error: err });
+    // console.log(data)
+    return res.json({ success: true, data: data });
+  })
+});
+router.post("/getWordcard", (req, res) => {
+  const {user} = req.body;
+  var a = {user:user};
+  console.log(a);
+  Wordcard.find(a, (err, data) => {
+    if (err) return res.json({ success: false, error: err });
+    // console.log(data)
+    return res.json({ success: true, data: data });
+  })
+});
+router.post("/getWord", (req, res) => {
+  const {user, wordcard} = req.body;
+  var a = {user:user, wordcard:wordcard};
+  Word.find(a, (err, data) => {
     if (err) return res.json({ success: false, error: err });
     // console.log(data)
     return res.json({ success: true, data: data });

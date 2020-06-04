@@ -49,7 +49,7 @@
 	<div style="margin-top: 50px;">
 	  
 	  <router-link to="/Word" style="text-decoration:none;">
-	  <el-button type="info" style="position:absolute; right:17%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" round>新增小卡</el-button>
+	  <el-button type="info" style="position:absolute; right:17%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" round @click="addWordCard()">新增小卡</el-button>
 	  </router-link>
 	</div>
 	
@@ -76,7 +76,28 @@ export default {
   methods: {
     addRow() {
 	  this.addWordList.push({word: "", definition: ""})
-	}
+	},
+	async addWordCard() {
+		var temp = {user:"jeter1225"}
+		await fetch("http://localhost:3002/api/getWordcard", {
+                method: 'POST',
+                body: JSON.stringify(temp),
+                headers: {
+                    'Content-Type': 'application/json'
+            }})
+            .then(res => { return res.json() })
+            .then(originData => {
+                if(originData.success) {
+                    console.log(originData)
+                    if(originData.data) {
+                        alert(originData.data[0].name);
+                    }
+                }
+                else
+                    alert('Fail.');
+            })
+            .catch((err) => console.error(err));	
+	},
   }
 };
 </script>
