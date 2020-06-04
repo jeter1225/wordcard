@@ -1,23 +1,23 @@
 <template>
   <div>
-    <h1 style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;">My Word 1</h1>
+    <h1 style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;">{{ this.cardName }}</h1>
 	<div class="homepage_line_color"></div>
 	
 	<br>
 	<br>
 	
 	<el-carousel indicator-position="outside" arrow="always" :autoplay="false" style="width: 70%; margin:0px auto;" >
-      <el-carousel-item v-for="item in 4" :key="item">
+      <el-carousel-item v-for="id in wordList" :key="id">
 	  
         <el-row style="font-size: 40px; font-family:Microsoft JhengHei; font-weight: bold; text-align:center; line-height:200px;">
           <el-col :span="12">
-            <div><h3>{{ english[item - 1] }}</h3></div>
+            <div><h3>{{ id.word }}</h3></div>
 		  </el-col>
 		  <el-col :span="1">
             <div class="headerDivider"></div> 
           </el-col>
           <el-col :span="12">
-            <div><h3>{{ chinese[item - 1] }}</h3></div>
+            <div><h3>{{ id.definition }}</h3></div>
           </el-col>
         </el-row>
 		
@@ -84,14 +84,40 @@
 </template>
 <script>
 export default {
-  name: 'addWord',
+  name: 'myWord',
   data(){
 	return {
 	  word: "",
 	  definition: "",
-	  english: ["apple", "banana", "orange", "tomato"],
-	  chinese: ["蘋果", "香蕉", "橘子", "番茄"]
+	  cardName: "",
+	  wordList: []
 	}
+  },
+  methods: {
+  },
+  mounted: async function(){
+    this.cardName = this.$route.params.cardName;
+    var temp = {user:"jeter1225", wordcardName: this.cardName}
+	await fetch("http://localhost:3002/api/getWord", {
+		method: 'POST',
+		body: JSON.stringify(temp),
+		headers: {
+			'Content-Type': 'application/json'
+	}})
+	.then(res => { return res.json() })
+	.then(originData => {
+		if(originData.success) {
+			console.log(originData)
+			if(originData.data) {
+				for (var i = 0; i < originData.data.length; i++){
+					this.wordList.push({word: originData.data[i].word, definition: originData.data[i].definition});
+				}
+			}
+		}
+		else
+			alert('Fail.');
+	})
+	.catch((err) => console.error(err));
   }
 };
 </script>

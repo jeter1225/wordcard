@@ -64,8 +64,8 @@ router.post("/getWordcard", (req, res) => {
   })
 });
 router.post("/getWord", (req, res) => {
-  const {user, wordcard} = req.body;
-  var a = {user:user, wordcard:wordcard};
+  const {user, wordcardName} = req.body;
+  var a = {user:user, wordcardName:wordcardName};
   Word.find(a, (err, data) => {
     if (err) return res.json({ success: false, error: err });
     // console.log(data)
