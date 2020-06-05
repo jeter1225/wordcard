@@ -71,47 +71,82 @@ export default {
 	  addWordList: [
 	    {word: "", definition: ""},
 		{word: "", definition: ""}
-	  ]
+	  ],
+	  inputErrorExist: false
 	}
   },
   methods: {
     addRow() {
 	  this.addWordList.push({word: "", definition: ""})
 	},
+	checkEmpty() {
+	  var i;
+	  this.inputErrorExist = false;
+	  if (this.cardname == ""){
+	    alert("小卡名稱還未填寫!");
+		this.inputErrorExist = true;
+		return;
+	  }
+	  for (i = 0; i < this.addWordList.length; i++){
+	    if (this.addWordList[i].word == "" & this.addWordList[i].definition == ""){
+		  this.addWordList.splice(i, 1);
+		  i--;
+		  continue;
+		}
+		if (this.addWordList[i].word == "" & this.addWordList[i].definition != ""){
+		  alert(this.addWordList[i].definition + "的單字還未填寫!");
+		  this.inputErrorExist = true;
+		  break;
+		}
+		if (this.addWordList[i].definition == "" & this.addWordList[i].word != ""){
+		  alert(this.addWordList[i].word + "的定義還未填寫!");
+		  this.inputErrorExist = true;
+		  break;
+		}
+	  }
+	  if (this.addWordList.length < 1){
+	    alert("至少要有一個單字!");
+		this.inputErrorExist = true;
+	  }
+	},
 	async addWordCard() {
-		var tempWordcard = {user:"jeter1225", name:"test data", numberOfWords:1000}
-		var tempWordlist = [{user:"jeter1225", wordcardName:"test data", word:"love", definition:"愛"}, 
-							{user:"jeter1225", wordcardName:"test data", word:"move", definition:"移動"}]
+		this.checkEmpty();
+		if (this.inputErrorExist == true){ return; }
+		var tempWordcard = {user:"jeter1225", name:this.cardname, numberOfWords:this.addWordList.length};
+		var tempWordlist = [];
+		for (var i = 0; i < this.addWordList.length; i++){
+		  tempWordlist.push({user:"jeter1225", wordcardName:this.cardname, word:this.addWordList[i].word, definition:this.addWordList[i].definition});
+		}
 		await fetch("http://localhost:3002/api/addWordcard", {
-                method: 'POST',
-                body: JSON.stringify(tempWordcard),
-                headers: {
-                    'Content-Type': 'application/json'
-            }})
-            .then(res => { return res.json() })
-            .then(originData => {
-                if(originData.success) {
-                    console.log("successfully. ");
-                }
-                else
-                    alert('Fail.');
-            })
-			.catch((err) => console.error(err));	
+			method: 'POST',
+			body: JSON.stringify(tempWordcard),
+			headers: {
+				'Content-Type': 'application/json'
+		}})
+		.then(res => { return res.json() })
+		.then(originData => {
+			if(originData.success) {
+				console.log("successfully. ");
+			}
+			else
+				alert('Fail.');
+		})
+		.catch((err) => console.error(err));	
 		await fetch("http://localhost:3002/api/addWord", {
-                method: 'POST',
-                body: JSON.stringify(tempWordlist),
-                headers: {
-                    'Content-Type': 'application/json'
-            }})
-            .then(res => { return res.json() })
-            .then(originData => {
-                if(originData.success) {
-                    console.log("successfully. ");
-                }
-                else
-                    alert('Fail.');
-            })
-			.catch((err) => console.error(err));
+			method: 'POST',
+			body: JSON.stringify(tempWordlist),
+			headers: {
+				'Content-Type': 'application/json'
+		}})
+		.then(res => { return res.json() })
+		.then(originData => {
+			if(originData.success) {
+				console.log("successfully. ");
+			}
+			else
+				alert('Fail.');
+		})
+		.catch((err) => console.error(err));
 	},
   }
 };
