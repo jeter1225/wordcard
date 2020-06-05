@@ -63,6 +63,23 @@ router.post("/getWordcard", (req, res) => {
     return res.json({ success: true, data: data });
   })
 });
+router.post('/addWordcard', (req, res) => {
+  let wordcard = new Wordcard();
+  const {user, name, numberOfWords} = req.body;
+  if (!user || !name || !numberOfWords) {
+    return res.json({
+      success: false,
+      error: "INVALID INPUTS"
+    });
+  }
+  wordcard.user = user;
+  wordcard.name = name;
+  wordcard.numberOfWords = numberOfWords;
+  wordcard.save(err => {
+    if (err) {console.log(err);return res.json({ success: false, error: err });}
+    return res.json({ success: true });
+  })
+})
 router.post("/getWord", (req, res) => {
   const {user, wordcardName} = req.body;
   var a = {user:user, wordcardName:wordcardName};
@@ -72,6 +89,26 @@ router.post("/getWord", (req, res) => {
     return res.json({ success: true, data: data });
   })
 });
+router.post('/addWord', (req, res) => {
+  const wordlist = req.body;
+  wordlist.forEach(eachWord => {
+    let tempWord = new Word();
+    if (!eachWord.user || !eachWord.wordcardName || !eachWord.word || !eachWord.definition) {
+      return res.json({
+        success: false,
+        error: "INVALID INPUTS"
+      });
+    }
+    tempWord.user = eachWord.user;
+    tempWord.wordcardName = eachWord.wordcardName;
+    tempWord.word = eachWord.word;
+    tempWord.definition = eachWord.definition;
+    tempWord.save(err => {
+      if (err) {console.log(err);return res.json({ success: false, error: err });}
+    })
+  });
+  return res.json({ success: true });
+})
 
 // append /api for our http requests
 app.use("/api", router);

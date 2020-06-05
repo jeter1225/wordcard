@@ -79,25 +79,39 @@ export default {
 	  this.addWordList.push({word: "", definition: ""})
 	},
 	async addWordCard() {
-		var temp = {user:"jeter1225", wordcardName:"GRE100"}
-		await fetch("http://localhost:3002/api/getWord", {
+		var tempWordcard = {user:"jeter1225", name:"test data", numberOfWords:1000}
+		var tempWordlist = [{user:"jeter1225", wordcardName:"test data", word:"love", definition:"愛"}, 
+							{user:"jeter1225", wordcardName:"test data", word:"move", definition:"移動"}]
+		await fetch("http://localhost:3002/api/addWordcard", {
                 method: 'POST',
-                body: JSON.stringify(temp),
+                body: JSON.stringify(tempWordcard),
                 headers: {
                     'Content-Type': 'application/json'
             }})
             .then(res => { return res.json() })
             .then(originData => {
                 if(originData.success) {
-                    console.log(originData)
-                    if(originData.data) {
-                        alert(originData.data[0].word);
-                    }
+                    console.log("successfully. ");
                 }
                 else
                     alert('Fail.');
             })
-            .catch((err) => console.error(err));	
+			.catch((err) => console.error(err));	
+		await fetch("http://localhost:3002/api/addWord", {
+                method: 'POST',
+                body: JSON.stringify(tempWordlist),
+                headers: {
+                    'Content-Type': 'application/json'
+            }})
+            .then(res => { return res.json() })
+            .then(originData => {
+                if(originData.success) {
+                    console.log("successfully. ");
+                }
+                else
+                    alert('Fail.');
+            })
+			.catch((err) => console.error(err));
 	},
   }
 };

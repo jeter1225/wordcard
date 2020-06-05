@@ -13,6 +13,9 @@ const DataSchema = new Schema(
     word: {
       type: String,
     },
+    definition: {
+      type: String,
+    },
   }
 );
 
