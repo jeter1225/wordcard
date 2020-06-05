@@ -72,6 +72,7 @@ export default {
 	    {word: "", definition: ""},
 		{word: "", definition: ""}
 	  ],
+	  cardNameList: [],
 	  inputErrorExist: false
 	}
   },
@@ -112,6 +113,37 @@ export default {
 	async addWordCard() {
 		this.checkEmpty();
 		if (this.inputErrorExist == true){ return; }
+		
+		var temp = {user:"jeter1225"}
+		await fetch("http://localhost:3002/api/getWordcard", {
+			method: 'POST',
+			body: JSON.stringify(temp),
+			headers: {
+					'Content-Type': 'application/json'
+		}})
+		.then(res => { return res.json() })
+		.then(originData => {
+			if(originData.success) {
+				console.log(originData)
+				if(originData.data) {
+					for (var i = 0; i < originData.data.length; i++){
+						this.cardNameList.push(originData.data[i].name);
+					}
+				}
+			}
+			else
+				alert('Fail.');
+		})
+		.catch((err) => console.error(err));
+		for (var i = 0; i < this.cardNameList.length; i++){
+		  if (this.cardname == this.cardNameList[i]){
+		    alert("這個小卡名稱已經存在!");
+			this.inputErrorExist = true;
+			break;
+		  }
+		}
+		if (this.inputErrorExist == true){ return; }
+		
 		var tempWordcard = {user:"jeter1225", name:this.cardname, numberOfWords:this.addWordList.length};
 		var tempWordlist = [];
 		for (var i = 0; i < this.addWordList.length; i++){
