@@ -102,18 +102,21 @@ export default {
   },
   methods: {
     async deleteWordCard() {
-	  await fetch("http://localhost:3002/api/deleteWordcard/jeter1225/" + this.cardName , {
-        method: 'DELETE',
-    })
-	  .then(res => { return res.json() })
-	  .then(originData => {
-		if(originData.success) {
+	  if (confirm("確認要刪除小卡嗎?(刪除後不可復原)")){
+	    await fetch("http://localhost:3002/api/deleteWordcard/jeter1225/" + this.cardName , {
+          method: 'DELETE',
+        })
+	    .then(res => { return res.json() })
+	    .then(originData => {
+		  if(originData.success) {
 			console.log("successfully. ");
-		}
-		else
+		  }
+		  else
 			alert('Fail.');
-	  })
-	  .catch((err) => console.error(err));
+	    })
+	    .catch((err) => console.error(err));
+		this.$router.push("/word");
+	  }
 	}
   },
   mounted: async function(){
