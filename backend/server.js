@@ -10,6 +10,7 @@ Grid.mongo = mongoose.mongo;
 const User = require("./user");
 const Wordcard = require("./wordcard");
 const Word = require("./word");
+const Test = require("./test");
 
 const API_PORT = 3002;
 const app = express();
@@ -80,6 +81,20 @@ router.post('/addWordcard', (req, res) => {
     return res.json({ success: true });
   })
 })
+router.post("/updateWordCount", (req, res) => {
+  const { user, name, update } = req.body; // update example : {numberOfWords:1000}
+  Wordcard.findOneAndUpdate({ user:user, name: name }, update, err => {
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true });
+  });
+});
+router.delete("/deleteWord", (req, res) => {
+  const {user, wordcardName, word } = req.body;
+  Word.deleteOne({ user:user, wordcardName:wordcardName, word:word }, (err) => {
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true });
+  });
+})
 router.post("/getWord", (req, res) => {
   const {user, wordcardName} = req.body;
   var a = {user:user, wordcardName:wordcardName};
@@ -108,6 +123,24 @@ router.post('/addWord', (req, res) => {
     })
   });
   return res.json({ success: true });
+})
+router.post('/addTest', (req, res) => {
+  let tempTest = new Test();
+  const {user, wordcardName, rightList, wrongList} = req.body;
+  if (!user || !wordcardName) {
+    return res.json({
+      success: false,
+      error: "INVALID INPUTS"
+    });
+  }
+  tempTest.user = user;
+  tempTest.wordcardName = wordcardName;
+  tempTest.rightList = rightList;
+  tempTest.wrongList = wrongList;
+  tempTest.save(err => {
+    if (err) {console.log(err);return res.json({ success: false, error: err });}
+    return res.json({ success: true });
+  })
 })
 
 // append /api for our http requests
