@@ -1,11 +1,14 @@
 <template>
   <div>
     <el-row>
-	  <el-col :span="20">
+	  <el-col :span="16">
         <h1 style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;">{{ this.cardName }}</h1>
 	  </el-col>
 	  <el-col :span="4">
-	    <el-button type="danger" style="position:absolute; right:17%; top: 30%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" icon="el-icon-delete" round @click="deleteWordCard()">刪除小卡</el-button>
+	    <el-button style="position:absolute; top: 30%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" icon="el-icon-edit" round @click="editWordcard()">編輯小卡</el-button>
+	  </el-col>
+     <el-col :span="4">
+	    <el-button type="danger" style="position:absolute; right: 5%; top: 30%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" icon="el-icon-delete" round @click="deleteWordCard()">刪除小卡</el-button>
 	  </el-col>
 	</el-row>
 	<div class="homepage_line_color"></div>
@@ -119,7 +122,11 @@ export default {
 	    .catch((err) => console.error(err));
 		this.$router.push("/word");
 	  }
-	}
+  },
+  editWordcard() {
+    console.log("hi");
+    this.$router.push("/edit");
+  }
   },
   mounted: async function(){
     this.cardName = this.$route.params.cardName;
