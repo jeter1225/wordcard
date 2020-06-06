@@ -5,17 +5,35 @@
       @select="onMenuSelected"
       active-text-color="white"
       mode="horizontal"
-	  background-color= "#4A4E69"
+      background-color="#4A4E69"
       text-color="white"
-	  style="font-family:Microsoft JhengHei; font-weight: bold"
+      style="font-family:Microsoft JhengHei; font-weight: bold"
     >
       <el-menu-item index="1">Home</el-menu-item>
       <el-menu-item index="2">Word</el-menu-item>
       <el-menu-item index="3">Record</el-menu-item>
     </el-menu>
     <div
-      style="position: relative; top: -45px; left: 20px; color: white; font-size: 20px;; font-family:Microsoft JhengHei; width: 500px; font-weight: bold"
+      style="position: relative; top: -42px; left: 20px; color: white; font-size: 20px; font-family:Microsoft JhengHei; width: 500px; font-weight: bold"
     >WORDCARD</div>
+    <el-button
+      style="position: relative; top: -75px; left: 880px;"
+      @click="logoutVisible = true"
+    >Hi, {{username}}</el-button>
+
+    <el-dialog
+      :visible.sync="logoutVisible"
+      center
+      height="300px"
+      top="109px"
+      width="600px"
+      title="Sure you want to logout?"
+    >
+      <span slot="footer">
+        <el-button @click="logoutVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="confirmLogout">Sure</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -26,10 +44,13 @@ export default {
     return {
       windowWidth: window.innerWidth,
       defaultActive: '1',
+      username: '',
+      logoutVisible: false,
     };
   },
   created() {
     window.addEventListener('resize', this.resizeHandler);
+    this.username = localStorage.getItem('username').toUpperCase();
   },
   destroyed() {
     window.removeEventListener('resize', this.resizeHandler);
@@ -42,10 +63,10 @@ export default {
           case '/word':
             this.defaultActive = '2';
             break;
-		  case '/addWord':
+          case '/addWord':
             this.defaultActive = '2';
             break;
-		  case '/myWord':
+          case '/myWord':
             this.defaultActive = '2';
             break;
           case '/record':
@@ -82,8 +103,10 @@ export default {
     resizeHandler() {
       this.windowWidth = window.innerWidth;
     },
-    logout() {
-      this.$store.dispatch('auth/Logout', this.$router);
+    confirmLogout() {
+      this.logoutVisible = false;
+      this.$router.push('/');
+      localStorage.clear();
     },
   },
 };
