@@ -44,7 +44,6 @@
         </el-col>
       </el-row>
     </div>
-
     <br />
     <br />
     <br />
@@ -70,7 +69,6 @@ export default {
   name: 'editWord',
   data() {
     return {
-      cardname: '',
       cardList: [],
       inputErrorExist: false,
     };
@@ -80,7 +78,7 @@ export default {
       this.$emit('update:edit', false);
     },
   },
-  components: {
+  props: {
     cardname: {
       type: String,
       default: '',
@@ -89,6 +87,11 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+  watch:{
+    cardname(newVal){
+      console.log(newVal)
+    }
   },
   async mounted() {
     var temp = { user: 'jeter1225', wordcardName: 'My word 1' };
