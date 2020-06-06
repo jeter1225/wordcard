@@ -102,7 +102,7 @@ export default {
   },
   methods: {
     async deleteWordCard() {
-	  await fetch("http://localhost:3002/api/deleteWordcard/jeter1225/" + this.cardName + "/" + this.wordList.length , {
+	  await fetch("http://localhost:3002/api/deleteWordcard/jeter1225/" + this.cardName , {
         method: 'DELETE',
     })
 	  .then(res => { return res.json() })
