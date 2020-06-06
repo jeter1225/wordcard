@@ -8,21 +8,27 @@
     </el-row>
 	
 	<div style="margin-bottom: 50px;">
+	  <el-row style="width: 70%; margin:0px auto; margin-top: 30px">
+		<el-col :span="10">
+			<div><h1 style="font-size: 20px; font-family:Microsoft JhengHei;">單字</h1></div>
+		</el-col>
+		<el-col :span="10">
+			<div><h1 style="font-size: 20px; font-family:Microsoft JhengHei;">中文</h1></div>
+		</el-col>
+	  </el-row>
 	  <el-row v-for="(id, index) in addWordList" :key="index" style="width: 70%; margin:0px auto; margin-top: 30px">
         <el-col :span="10">
-          <div><h1 style="font-size: 20px; font-family:Microsoft JhengHei;">單字</h1></div>
 		  <div>
 		    <el-input placeholder="请输入内容" v-model="id.word" clearable :disabled="true"></el-input>
 		  </div>
         </el-col>
         <el-col :span="10">
-	      <div><h1 style="font-size: 20px; font-family:Microsoft JhengHei;">中文</h1></div>
           <div>
 		    <el-input placeholder="请输入内容" v-model="id.definition" clearable :disabled="true"></el-input>
 		  </div>
         </el-col>
 		<el-col :span="4">
-          <div style="margin-left: 20px; margin-top: 75px">
+          <div style="margin-left: 20px; margin-top: 3px">
 			  <i class="el-icon-delete-solid" style="font-size:30px"></i>
 		  </div>
         </el-col>
