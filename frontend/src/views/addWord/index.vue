@@ -179,6 +179,7 @@ export default {
 				alert('Fail.');
 		})
 		.catch((err) => console.error(err));
+		this.$router.push("/word");
 	},
   }
 };
