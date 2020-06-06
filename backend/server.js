@@ -95,6 +95,13 @@ router.delete("/deleteWord", (req, res) => {
     return res.json({ success: true });
   });
 })
+router.delete("/deleteWordcard", (req, res) => {
+  const {user, name, numberOfWords } = req.body;
+  Word.deleteOne({ user:user, name:name, numberOfWords:numberOfWords }, (err) => {
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true });
+  });
+})
 router.post("/getWord", (req, res) => {
   const {user, wordcardName} = req.body;
   var a = {user:user, wordcardName:wordcardName};
