@@ -24,6 +24,20 @@
       </el-carousel-item>
     </el-carousel>
 	
+	<br>
+	<br>
+	<br>
+	
+	<el-card shadow="hover" style="width: 70%; background-color:#F2E9E4; text-align:center; line-height:200px; border-color:#272727;">
+      <div>
+		<span style="font-size: 40px; font-family:Microsoft JhengHei; font-weight: bold;">{{ questionList[questionNo].word }}</span>
+	  </div>
+	</el-card>
+	
+	<br>
+	<br>
+	<br>
+	
 	<div>
 	  <el-button type="info" style="position:absolute; right:17%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" round>我要考試</el-button>
 	</div>
@@ -44,6 +58,7 @@ export default {
 	  cardName: "",
 	  wordList: [],
 	  questionList: [],
+	  questionNo: 0,
 	  answerList: []
 	}
   },
@@ -96,8 +111,7 @@ export default {
 }
 
 .el-card {
-	max-width: 350px;
-	height: 150px;
+	height: 300px;
 	background-color: #F2E9E4;
 }
 
