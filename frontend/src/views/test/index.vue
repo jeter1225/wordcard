@@ -28,11 +28,26 @@
 	<br>
 	<br>
 	
-	<el-card shadow="hover" style="width: 70%; background-color:#F2E9E4; text-align:center; line-height:200px; border-color:#272727;">
-      <div>
-		<span style="font-size: 40px; font-family:Microsoft JhengHei; font-weight: bold;">{{ questionList[questionNo].word }}</span>
-	  </div>
-	</el-card>
+	<el-row>
+	  <el-col :span="4">
+	    <br>
+	  </el-col>
+      <el-col :span="8">
+	    <el-card shadow="hover" style="background-color:#F2E9E4; text-align:center; line-height:200px; border-color:#272727;">
+          <div>
+		    <span style="font-size: 40px; font-family:Microsoft JhengHei; font-weight: bold;">{{ questionList[questionNo].word }}</span>
+	      </div>
+	    </el-card>
+	  </el-col>
+	  <el-col :span="8">
+	    <el-card shadow="hover" style="background-color:#F2E9E4; text-align:center; line-height:200px; border-color:#272727;">
+          <div>
+		    <el-input placeholder="请输入内容" v-model="answer" clearable></el-input>
+	      </div>
+	    </el-card>
+	  </el-col>
+	</el-row>
+	
 	
 	<br>
 	<br>
@@ -59,6 +74,7 @@ export default {
 	  wordList: [],
 	  questionList: [],
 	  questionNo: 0,
+	  answer: "",
 	  answerList: []
 	}
   },
@@ -97,7 +113,7 @@ export default {
   }
 };
 </script>
-<style lang="stylus">
+<style lang="stylus" scoped>
 .headerDivider { 
     border-left:1px solid #38546d; 
     border-right:1px solid #16222c; 
@@ -111,7 +127,8 @@ export default {
 }
 
 .el-card {
-	height: 300px;
+	height: 250px;;
+	max-width: 100%;
 	background-color: #F2E9E4;
 }
 

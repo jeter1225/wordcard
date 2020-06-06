@@ -185,13 +185,6 @@ export default {
 };
 </script>
 <style lang="stylus">
-
-.el-card {
-	max-width: 350px;
-	height: 150px;
-	background-color: #F2E9E4;
-}
-
 .span {
 	font-size: 50px;
 }
