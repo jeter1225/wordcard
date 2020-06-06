@@ -1,6 +1,13 @@
 <template>
   <div>
-    <h1 style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;">{{ this.cardName }}</h1>
+    <el-row>
+	  <el-col :span="20">
+        <h1 style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;">{{ this.cardName }}</h1>
+	  </el-col>
+	  <el-col :span="4">
+	    <el-button type="danger" style="position:absolute; right:17%; top: 30%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" icon="el-icon-delete" round @click="deleteWordCard()">刪除小卡</el-button>
+	  </el-col>
+	</el-row>
 	<div class="homepage_line_color"></div>
 	
 	<br>
@@ -94,6 +101,24 @@ export default {
 	}
   },
   methods: {
+    async deleteWordCard() {
+	  var temp = {user:"jeter1225", name:this.cardname, numberOfWords:this.wordList.length}
+	  await fetch("http://localhost:3002/api/deleteWordcard", {
+        method: 'POST',
+        body: JSON.stringify(temp),
+        headers: {
+				'Content-Type': 'application/json'
+	  }})
+	  .then(res => { return res.json() })
+	  .then(originData => {
+		if(originData.success) {
+			console.log("successfully. ");
+		}
+		else
+			alert('Fail.');
+	  })
+	  .catch((err) => console.error(err));
+	}
   },
   mounted: async function(){
     this.cardName = this.$route.params.cardName;
