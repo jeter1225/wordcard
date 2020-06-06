@@ -1,20 +1,13 @@
 <template>
   <div>
-    <el-row>
-	  <el-col :span="20">
-        <h1 style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;">{{ this.cardName }} 測驗</h1>
-	  </el-col>
-	  <el-col :span="4">
-	    <el-button type="danger" style="position:absolute; right:17%; top: 30%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" icon="el-icon-delete" round @click="deleteWordCard()">刪除小卡</el-button>
-	  </el-col>
-	</el-row>
+    <h1 style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;">{{ this.cardName }} 測驗</h1>
 	<div class="homepage_line_color"></div>
 	
 	<br>
 	<br>
 	
 	<el-carousel indicator-position="outside" arrow="always" :autoplay="false" style="width: 70%; margin:0px auto;" >
-      <el-carousel-item v-for="id in wordList" :key="id">
+      <el-carousel-item v-for="id in questionList" :key="id">
 	  
         <el-row style="font-size: 40px; font-family:Microsoft JhengHei; font-weight: bold; text-align:center; line-height:200px;">
           <el-col :span="12">
@@ -34,52 +27,6 @@
 	<div>
 	  <el-button type="info" style="position:absolute; right:17%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" round>我要考試</el-button>
 	</div>
-    
-    <el-row style="width: 70%; margin:0px auto; margin-top: 50px;">
-      <el-col :span="5">
-          <div><h1 style="font-size: 20px; font-family:Microsoft JhengHei; padding-left: 50px;">新增詞彙</h1></div>
-      </el-col>
-      <el-col :span="15">
-        <div><div><h1 style="font-size: 20px; font-family:Microsoft JhengHei; padding-left: 50px;"></h1></div></div>
-      </el-col>
-    </el-row>
-	<el-row style="width: 70%; margin:0px auto;">
-      <el-col :span="5">
-          <div><h1 style="font-size: 20px; font-family:Microsoft JhengHei; padding-left: 50px;">Word</h1></div>
-      </el-col>
-      <el-col :span="10">
-        <div>
-		  <el-input
-		    placeholder="请输入内容"
-		    v-model="word"
-		    clearable>
-		  </el-input>
-		</div>
-      </el-col>
-    </el-row>
-	<el-row style="width: 70%; margin:0px auto;">
-      <el-col :span="5">
-          <div><h1 style="font-size: 20px; font-family:Microsoft JhengHei; padding-left: 50px;">Definition</h1></div>
-      </el-col>
-      <el-col :span="10">
-        <div>
-		  <el-input
-		    placeholder="请输入内容"
-		    v-model="definition"
-		    clearable>
-		  </el-input>
-		</div>
-      </el-col>
-	  <el-col :span="5">
-        <div>
-		  <div style="display: flex; justify-content: center; align-items: center">
-		  <router-link to="/">
-		    <el-button type="info" onclick="" style="display: inline-block; margin-top: 50px; width: 40px; height: 40px; font-size: 15px" icon="el-icon-plus" circle></el-button>
-		  </router-link>
-		  </div>
-		</div>
-      </el-col>
-    </el-row>
 	
 	<br>
 	<br>
@@ -94,29 +41,17 @@ export default {
   name: 'test',
   data(){
 	return {
-	  word: "",
-	  definition: "",
 	  cardName: "",
-	  wordList: []
+	  wordList: [],
+	  questionList: [],
+	  answerList: []
 	}
   },
   methods: {
-    async deleteWordCard() {
-	  if (confirm("確認要刪除小卡嗎?(刪除後不可復原)")){
-	    await fetch("http://localhost:3002/api/deleteWordcard/jeter1225/" + this.cardName , {
-          method: 'DELETE',
-        })
-	    .then(res => { return res.json() })
-	    .then(originData => {
-		  if(originData.success) {
-			console.log("successfully. ");
-		  }
-		  else
-			alert('Fail.');
-	    })
-	    .catch((err) => console.error(err));
-		this.$router.push("/word");
-	  }
+    randomProduceQuestion() {
+	  var tempList = this.wordList;
+	  tempList.sort(() => Math.random() - 0.5);
+	  this.questionList = tempList;
 	}
   },
   mounted: async function(){
@@ -142,6 +77,8 @@ export default {
 			alert('Fail.');
 	})
 	.catch((err) => console.error(err));
+	
+	this.randomProduceQuestion();
   }
 };
 </script>
