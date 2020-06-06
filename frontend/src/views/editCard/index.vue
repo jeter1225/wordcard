@@ -2,7 +2,7 @@
   <div>
     <el-row>
       <el-col :span="12">
-	    <div><h1 style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;">Edit Card</h1></div>
+	    <div><h1 style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;">Edit card</h1></div>
 		<div class="homepage_line_color"></div>
 	  </el-col>
     </el-row>
@@ -16,7 +16,7 @@
 			<div><h1 style="font-size: 20px; font-family:Microsoft JhengHei;">中文</h1></div>
 		</el-col>
 	  </el-row>
-	  <el-row v-for="(id, index) in addWordList" :key="index" style="width: 70%; margin:0px auto; margin-top: 30px">
+	  <el-row v-for="(id, index) in cardList" :key="index" style="width: 70%; margin:0px auto; margin-top: 30px">
         <el-col :span="10">
 		  <div>
 		    <el-input placeholder="请输入内容" v-model="id.word" clearable :disabled="true"></el-input>
@@ -41,98 +41,51 @@
 	<br>
 	<br>
 	<br>
-
+	<div class="homepage_line_color" style="margin:0px auto; width: 70%"></div>
+	
+	<div style="margin-top: 50px;">
+	  
+	  <el-button type="info" style="position:absolute; right:17%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" round @click="addWordCard()">儲存</el-button>
+	  <!--
+	  <router-link to="/Word" style="text-decoration:none;">
+	  </router-link> -->
+	</div>
   </div>
 </template>
 <script>
 export default {
-  name: 'addWord',
+  name: 'editWord',
   data(){
 	return {
 	  cardname: "",
-	  addWordList: [
-	    {word: "", definition: ""},
-		{word: "", definition: ""}
-	  ],
-	  cardNameList: [],
+	  cardList: [],
 	  inputErrorExist: false
 	}
   },
   methods: {
-    addRow() {
-	  this.addWordList.push({word: "", definition: ""})
-	},
-	async addWordCard() {
-		this.checkEmpty();
-		if (this.inputErrorExist == true){ return; }
-		
-		var temp = {user:"jeter1225"}
-		await fetch("http://localhost:3002/api/getWordcard", {
-			method: 'POST',
-			body: JSON.stringify(temp),
-			headers: {
-					'Content-Type': 'application/json'
-		}})
-		.then(res => { return res.json() })
-		.then(originData => {
-			if(originData.success) {
-				console.log(originData)
-				if(originData.data) {
-					for (var i = 0; i < originData.data.length; i++){
-						this.cardNameList.push(originData.data[i].name);
-					}
+  },
+  mounted: async function(){
+    var temp = {user:"jeter1225", wordcardName:"My word 1"};
+	await fetch("http://localhost:3002/api/getWord", {
+        method: 'POST',
+        body: JSON.stringify(temp),
+        headers: {
+				'Content-Type': 'application/json'
+	}})
+	.then(res => { return res.json() })
+	.then(originData => {
+		if(originData.success) {
+			if(originData.data) {
+				for (var i = 0; i < originData.data.length; i++){
+					this.cardList.push({word: originData.data[i].word, definition: originData.data[i].definition});
 				}
+				console.log(this.cardList);
 			}
-			else
-				alert('Fail.');
-		})
-		.catch((err) => console.error(err));
-		for (var i = 0; i < this.cardNameList.length; i++){
-		  if (this.cardname == this.cardNameList[i]){
-		    alert("這個小卡名稱已經存在!");
-			this.inputErrorExist = true;
-			break;
-		  }
 		}
-		if (this.inputErrorExist == true){ return; }
-		
-		var tempWordcard = {user:"jeter1225", name:this.cardname, numberOfWords:this.addWordList.length};
-		var tempWordlist = [];
-		for (var i = 0; i < this.addWordList.length; i++){
-		  tempWordlist.push({user:"jeter1225", wordcardName:this.cardname, word:this.addWordList[i].word, definition:this.addWordList[i].definition});
-		}
-		await fetch("http://localhost:3002/api/addWordcard", {
-			method: 'POST',
-			body: JSON.stringify(tempWordcard),
-			headers: {
-				'Content-Type': 'application/json'
-		}})
-		.then(res => { return res.json() })
-		.then(originData => {
-			if(originData.success) {
-				console.log("successfully. ");
-			}
-			else
-				alert('Fail.');
-		})
-		.catch((err) => console.error(err));	
-		await fetch("http://localhost:3002/api/addWord", {
-			method: 'POST',
-			body: JSON.stringify(tempWordlist),
-			headers: {
-				'Content-Type': 'application/json'
-		}})
-		.then(res => { return res.json() })
-		.then(originData => {
-			if(originData.success) {
-				console.log("successfully. ");
-			}
-			else
-				alert('Fail.');
-		})
-		.catch((err) => console.error(err));
-		this.$router.push("/word");
-	},
+		else
+			alert('Fail.');
+	})
+	.catch((err) => console.error(err));
   }
 };
 </script>
