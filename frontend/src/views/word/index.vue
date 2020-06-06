@@ -69,7 +69,7 @@ export default {
 
 .el-card {
 	max-width: 350px;
-	height: 150px;
+	height: 200px;;
 	background-color: #F2E9E4;
 }
 
