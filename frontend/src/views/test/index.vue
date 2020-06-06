@@ -2,7 +2,7 @@
   <div>
     <el-row>
 	  <el-col :span="20">
-        <h1 style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;">{{ this.cardName }}</h1>
+        <h1 style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;">{{ this.cardName }} 測驗</h1>
 	  </el-col>
 	  <el-col :span="4">
 	    <el-button type="danger" style="position:absolute; right:17%; top: 30%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" icon="el-icon-delete" round @click="deleteWordCard()">刪除小卡</el-button>
@@ -32,9 +32,7 @@
     </el-carousel>
 	
 	<div>
-	  <router-link v-bind:to="{name:'test', params:{cardName: cardName}}" style="text-decoration:none;">
-	    <el-button type="info" style="position:absolute; right:17%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" round>我要考試</el-button>
-	  </router-link>
+	  <el-button type="info" style="position:absolute; right:17%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" round>我要考試</el-button>
 	</div>
     
     <el-row style="width: 70%; margin:0px auto; margin-top: 50px;">
@@ -93,7 +91,7 @@
 </template>
 <script>
 export default {
-  name: 'myWord',
+  name: 'test',
   data(){
 	return {
 	  word: "",
