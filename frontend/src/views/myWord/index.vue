@@ -102,13 +102,9 @@ export default {
   },
   methods: {
     async deleteWordCard() {
-	  var temp = {user:"jeter1225", name:this.cardname, numberOfWords:this.wordList.length}
-	  await fetch("http://localhost:3002/api/deleteWordcard", {
-        method: 'POST',
-        body: JSON.stringify(temp),
-        headers: {
-				'Content-Type': 'application/json'
-	  }})
+	  await fetch("http://localhost:3002/api/deleteWordcard/jeter1225/" + this.cardname + "/" + this.wordList.length , {
+        method: 'DELETE',
+    })
 	  .then(res => { return res.json() })
 	  .then(originData => {
 		if(originData.success) {
