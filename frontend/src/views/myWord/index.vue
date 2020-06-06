@@ -36,13 +36,13 @@
         :autoplay="false"
         style="width: 70%; margin:0px auto;"
       >
-        <el-carousel-item v-for="id in wordList" :key="id">
+        <el-carousel-item v-for="(word, index) in wordList" :key="word.word+index">
           <el-row
             style="font-size: 40px; font-family:Microsoft JhengHei; font-weight: bold; text-align:center; line-height:200px;"
           >
             <el-col :span="12">
               <div>
-                <h3>{{ id.word }}</h3>
+                <h3>{{ word.word }}</h3>
               </div>
             </el-col>
             <el-col :span="1">
@@ -50,7 +50,7 @@
             </el-col>
             <el-col :span="12">
               <div>
-                <h3>{{ id.definition }}</h3>
+                <h3>{{ word.definition }}</h3>
               </div>
             </el-col>
           </el-row>
@@ -133,7 +133,7 @@
       <br />
     </div>
     <div v-else>
-      <edit-card :cardname="cardname" :edit.sync="edit" />
+      <edit-card :cardname="cardName" :edit.sync="edit" />
     </div>
   </div>
 </template>
@@ -173,7 +173,7 @@ export default {
       }
     },
     editWordcard() {
-      //   console.log('hi');
+      console.log(this.cardName);
       //   this.$router.push('/edit');
       this.edit = true;
     },

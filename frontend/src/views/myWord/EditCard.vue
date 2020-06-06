@@ -3,7 +3,9 @@
     <el-row>
       <el-col :span="12">
         <div>
-          <h1 style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;">Edit card</h1>
+          <h1
+            style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;"
+          >Edit card {{cardname}}</h1>
         </div>
         <div class="homepage_line_color"></div>
       </el-col>
@@ -87,11 +89,6 @@ export default {
       type: Boolean,
       default: false,
     },
-  },
-  watch:{
-    cardname(newVal){
-      console.log(newVal)
-    }
   },
   async mounted() {
     var temp = { user: 'jeter1225', wordcardName: 'My word 1' };
