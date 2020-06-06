@@ -16,6 +16,8 @@
 		    <span style="font-size: 40px; font-family:Microsoft JhengHei; font-weight: bold;">{{ questionList[questionNo].word }}</span>
 	      </div>
 	    </el-card>
+		<p v-if="correctFlag == 1" style="color: green; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 50px;">回答正確! 正確答案： {{ correctAnswer.word }} {{ correctAnswer.definition }}</p>
+		<p v-if="correctFlag == 0" style="color: red; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 50px;">回答錯誤! 正確答案： {{ correctAnswer.word }} {{ correctAnswer.definition }}</p>
 	  </el-col>
 	  <el-col :span="8">
 	    <el-card shadow="hover" style="background-color:#F2E9E4; text-align:center; line-height:200px; border-color:#272727;">
@@ -27,8 +29,6 @@
 	</el-row>
 	
 	
-	<br>
-	<br>
 	<br>
 	
 	<div>
@@ -54,6 +54,8 @@ export default {
 	  questionList: [],
 	  questionNo: 0,
 	  answer: "",
+	  correctFlag: -1,
+	  correctAnswer: {word: "", definition: ""},
 	  answerList: []
 	}
   },
@@ -64,15 +66,21 @@ export default {
 	  this.questionList = tempList;
 	},
 	checkAnswer() {
+	  this.correctAnswer.word = this.questionList[this.questionNo].word;
+	  this.correctAnswer.definition = this.questionList[this.questionNo].definition;
 	  if (this.answer == this.questionList[this.questionNo].definition){
-	    alert("correct");
-		this.questionNo++;
 		this.answer="";
+		this.correctFlag = 1;
 	  }
 	  else {
-	    alert("incorrect");
-		this.questionNo++;
 		this.answer="";
+		this.correctFlag = 0;
+	  }
+	  if (this.questionNo == (this.questionList.length - 1)){
+		alert(this.questionNo);
+	  }
+	  else{
+		this.questionNo++;
 	  }
 	}
   },
