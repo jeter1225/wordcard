@@ -91,10 +91,16 @@ router.post("/updateWordCount", (req, res) => {
     return res.json({ success: true });
   });
 });
-router.delete("/deleteWord", (req, res) => {
-  const { user, wordcardName, word } = req.body;
+router.post("/updateWord", (req, res) => {
+  const { user, wordcardName, word, update } = req.body; // update example : {numberOfWords:1000}
+  Word.findOneAndUpdate({ user: user, wordcardName: wordcardName, word: word }, update, (err) => {
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true });
+  });
+});
+router.delete("/deleteWord/:user/:wordcardName/:word", (req, res) => {
   Word.deleteOne(
-    { user: user, wordcardName: wordcardName, word: word },
+    { user: req.params.user, wordcardName: req.params.wordcardName, word: req.params.word },
     (err) => {
       if (err) return res.json({ success: false, error: err });
       return res.json({ success: true });

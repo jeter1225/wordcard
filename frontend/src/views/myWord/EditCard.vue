@@ -5,7 +5,7 @@
         <div>
           <h1
             style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;"
-          >Edit card {{cardname}}</h1>
+          >Edit {{cardname}}</h1>
         </div>
         <div class="homepage_line_color"></div>
       </el-col>
@@ -25,23 +25,28 @@
         </el-col>
       </el-row>
       <el-row
-        v-for="(id, index) in cardList"
-        :key="index"
-        style="width: 70%; margin:0px auto; margin-top: 30px"
+        v-for="(card, index) in cardList"
+        :key="card.word + index"
+        style="width: 70%; margin:0px auto; margin-top: 30pxl; display: flex; align-items: center"
       >
         <el-col :span="10">
           <div>
-            <el-input placeholder="请输入内容" v-model="id.word" clearable :disabled="true"></el-input>
+            <el-input placeholder="请输入内容" v-model="card.word" clearable></el-input>
           </div>
         </el-col>
         <el-col :span="10">
           <div>
-            <el-input placeholder="请输入内容" v-model="id.definition" clearable :disabled="true"></el-input>
+            <el-input placeholder="请输入内容" v-model="card.definition" clearable></el-input>
           </div>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="2">
           <div style="margin-left: 20px; margin-top: 3px">
-            <i class="el-icon-delete-solid" style="font-size:30px"></i>
+            <el-button icon="el-icon-edit" style="font-size:20px" @click="editWord(card.word)" circle></el-button>
+          </div>
+        </el-col>
+        <el-col :span="2" >
+          <div style="margin-top: 3px">
+             <el-button icon="el-icon-delete-solid" style="font-size:20px" @click="deleteWord(card.word)" circle></el-button>
           </div>
         </el-col>
       </el-row>
@@ -58,8 +63,8 @@
         type="info"
         style="position:absolute; right:17%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold"
         round
-        @click="editWordCard()"
-      >儲存</el-button>
+        @click="goBack()"
+      >返回</el-button>
       <!--
 	  <router-link to="/Word" style="text-decoration:none;">
       </router-link>-->
@@ -76,9 +81,68 @@ export default {
     };
   },
   methods: {
-    editWordCard() {
+    goBack() {
       this.$emit('update:edit', false);
     },
+    async deleteWord(a) {
+      await fetch('http://localhost:3002/api/deleteWord/jeter1225/' + this.cardname + '/' + a, {
+        method: 'DELETE',
+        },
+      )
+      .then(res => {
+        return res.json();
+      })
+      .then(originData => {
+        if (originData.success) {
+          alert("successfully deleted");
+        } else alert('Fail.');
+      })
+      .catch(err => console.error(err));
+      this.cardList = [];
+      var temp = { user: 'jeter1225', wordcardName: this.cardname };
+      await fetch('http://localhost:3002/api/getWord', {
+        method: 'POST',
+        body: JSON.stringify(temp),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => {
+        return res.json();
+      })
+      .then(originData => {
+        if (originData.success) {
+          if (originData.data) {
+            for (var i = 0; i < originData.data.length; i++) {
+              this.cardList.push({ word: originData.data[i].word, definition: originData.data[i].definition });
+            }
+          }
+        } else alert('Fail.');
+      })
+      .catch(err => console.error(err));
+    },
+    async editWord(a) {
+      console.log(a);
+      // var temp = {user:"jeter1225", wordcardName:this.cardname, word:a }
+      // await fetch('http://localhost:3002/api/editWord', {
+      //     method: 'POST',
+      //     body: JSON.stringify(temp),
+      //     headers: {
+      //     'Content-Type': 'application/json'
+      //     }
+      //   },
+      // )
+      // .then(res => {
+      //   return res.json();
+      // })
+      // .then(originData => {
+      //   if (originData.success) {
+      //     alert("successfully deleted");
+      //   } else alert('Fail.');
+      // })
+      // .catch(err => console.error(err));
+      // var temp = { user: 'jeter1225', wordcardName: this.cardname };
+    }
   },
   props: {
     cardname: {
@@ -91,7 +155,7 @@ export default {
     },
   },
   async mounted() {
-    var temp = { user: 'jeter1225', wordcardName: 'My word 1' };
+    var temp = { user: 'jeter1225', wordcardName: this.cardname };
     await fetch('http://localhost:3002/api/getWord', {
       method: 'POST',
       body: JSON.stringify(temp),
@@ -108,7 +172,6 @@ export default {
             for (var i = 0; i < originData.data.length; i++) {
               this.cardList.push({ word: originData.data[i].word, definition: originData.data[i].definition });
             }
-            console.log(this.cardList);
           }
         } else alert('Fail.');
       })
