@@ -6,28 +6,6 @@
 	<br>
 	<br>
 	
-	<el-carousel indicator-position="outside" arrow="always" :autoplay="false" style="width: 70%; margin:0px auto;" >
-      <el-carousel-item v-for="id in questionList" :key="id">
-	  
-        <el-row style="font-size: 40px; font-family:Microsoft JhengHei; font-weight: bold; text-align:center; line-height:200px;">
-          <el-col :span="12">
-            <div><h3>{{ id.word }}</h3></div>
-		  </el-col>
-		  <el-col :span="1">
-            <div class="headerDivider"></div> 
-          </el-col>
-          <el-col :span="12">
-            <div><h3>{{ id.definition }}</h3></div>
-          </el-col>
-        </el-row>
-		
-      </el-carousel-item>
-    </el-carousel>
-	
-	<br>
-	<br>
-	<br>
-	
 	<el-row>
 	  <el-col :span="4">
 	    <br>
@@ -42,7 +20,7 @@
 	  <el-col :span="8">
 	    <el-card shadow="hover" style="background-color:#F2E9E4; text-align:center; line-height:200px; border-color:#272727;">
           <div>
-		    <el-input placeholder="请输入内容" v-model="answer" clearable></el-input>
+		    <el-input placeholder="请输入内容" v-model="answer" style="font-size: 30px;" @keyup.enter.native="checkAnswer" clearable></el-input>
 	      </div>
 	    </el-card>
 	  </el-col>
@@ -54,7 +32,8 @@
 	<br>
 	
 	<div>
-	  <el-button type="info" style="position:absolute; right:17%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" round>我要考試</el-button>
+	  <el-button type="info" style="position:absolute; margin-right: 180px; right:17%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" icon="el-icon-d-arrow-right" @click="checkAnswer" round>跳過問題</el-button>
+	  <el-button type="danger" style="position:absolute; right:17%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" icon="el-icon-finished" round>結束考試</el-button>
 	</div>
 	
 	<br>
@@ -83,6 +62,18 @@ export default {
 	  var tempList = this.wordList;
 	  tempList.sort(() => Math.random() - 0.5);
 	  this.questionList = tempList;
+	},
+	checkAnswer() {
+	  if (this.answer == this.questionList[this.questionNo].definition){
+	    alert("correct");
+		this.questionNo++;
+		this.answer="";
+	  }
+	  else {
+	    alert("incorrect");
+		this.questionNo++;
+		this.answer="";
+	  }
 	}
   },
   mounted: async function(){
@@ -120,10 +111,6 @@ export default {
     height:98%; 
     position:absolute; 
     top:2%; 
-} 
-
-.el-carousel__item {
-	background-color: #F2E9E4;
 }
 
 .el-card {
