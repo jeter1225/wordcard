@@ -2,23 +2,9 @@
   <div>
     <el-row>
       <el-col :span="12">
-	    <div><h1 style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;">Word</h1></div>
+	    <div><h1 style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;">Edit Card</h1></div>
 		<div class="homepage_line_color"></div>
 	  </el-col>
-    </el-row>
-    
-    <el-row style="width: 70%; margin:0px auto; margin-top: 50px;">
-      <el-col :span="10">
-          <div><h1 style="font-size: 20px; font-family:Microsoft JhengHei;">小卡名稱</h1></div>
-		  <div>
-		  <el-input
-		    placeholder="请输入内容" v-model="cardname" clearable>
-		  </el-input>
-		</div>
-      </el-col>
-      <el-col :span="10">
-        <div><div><h1 style="font-size: 20px; font-family:Microsoft JhengHei; padding-left: 50px;"></h1></div></div>
-      </el-col>
     </el-row>
 	
 	<div style="margin-bottom: 50px;">
@@ -26,32 +12,22 @@
         <el-col :span="10">
           <div><h1 style="font-size: 20px; font-family:Microsoft JhengHei;">單字</h1></div>
 		  <div>
-		    <el-input placeholder="请输入内容" v-model="id.word" clearable></el-input>
+		    <el-input placeholder="请输入内容" v-model="id.word" clearable :disabled="true"></el-input>
 		  </div>
         </el-col>
-	    <el-col :span="4"><div><br></div></el-col>
         <el-col :span="10">
 	      <div><h1 style="font-size: 20px; font-family:Microsoft JhengHei;">中文</h1></div>
           <div>
-		    <el-input placeholder="请输入内容" v-model="id.definition" clearable></el-input>
+		    <el-input placeholder="请输入内容" v-model="id.definition" clearable :disabled="true"></el-input>
+		  </div>
+        </el-col>
+		<el-col :span="4">
+          <div style="margin-left: 20px; margin-top: 75px">
+			  <i class="el-icon-delete-solid" style="font-size:30px"></i>
 		  </div>
         </el-col>
 	  
       </el-row>
-	</div>
-	
-	<div style="margin-top: 50px; margin-bottom: 150px;">
-	  <el-button type="info" style="position:absolute; right:17%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold;" @click="addRow()" icon="el-icon-plus" circle></el-button>
-	</div>
-	
-	<div class="homepage_line_color" style="margin:0px auto; width: 70%"></div>
-	
-	<div style="margin-top: 50px;">
-	  
-	  <el-button type="info" style="position:absolute; right:17%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" round @click="addWordCard()">新增小卡</el-button>
-	  <!--
-	  <router-link to="/Word" style="text-decoration:none;">
-	  </router-link> -->
 	</div>
 	
 	<br>
@@ -79,36 +55,6 @@ export default {
   methods: {
     addRow() {
 	  this.addWordList.push({word: "", definition: ""})
-	},
-	checkEmpty() {
-	  var i;
-	  this.inputErrorExist = false;
-	  if (this.cardname == ""){
-	    alert("小卡名稱還未填寫!");
-		this.inputErrorExist = true;
-		return;
-	  }
-	  for (i = 0; i < this.addWordList.length; i++){
-	    if (this.addWordList[i].word == "" & this.addWordList[i].definition == ""){
-		  this.addWordList.splice(i, 1);
-		  i--;
-		  continue;
-		}
-		if (this.addWordList[i].word == "" & this.addWordList[i].definition != ""){
-		  alert(this.addWordList[i].definition + "的單字還未填寫!");
-		  this.inputErrorExist = true;
-		  break;
-		}
-		if (this.addWordList[i].definition == "" & this.addWordList[i].word != ""){
-		  alert(this.addWordList[i].word + "的定義還未填寫!");
-		  this.inputErrorExist = true;
-		  break;
-		}
-	  }
-	  if (this.addWordList.length < 1){
-	    alert("至少要有一個單字!");
-		this.inputErrorExist = true;
-	  }
 	},
 	async addWordCard() {
 		this.checkEmpty();
