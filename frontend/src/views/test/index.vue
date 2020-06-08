@@ -132,9 +132,25 @@ export default {
 		this.questionNo++;
 	  }
 	},
-	showGrade() {
-	  this.result.correctPercent = 100 * this.result.correctNum / this.result.answerNum;
-	  this.showResult = 1;
+	async showGrade() {
+		this.result.correctPercent = 100 * this.result.correctNum / this.result.answerNum;
+		this.showResult = 1;
+		var tempTest = {user:"jeter1225", wordcardName: this.cardName, questionList: this.questionList}
+		await fetch("http://localhost:3002/api/addTest", {
+			method: 'POST',
+			body: JSON.stringify(tempTest),
+			headers: {
+				'Content-Type': 'application/json'
+		}})
+		.then(res => { return res.json() })
+		.then(originData => {
+			if(originData.success) {
+				alert('Finished!.');
+			}
+			else
+				alert('Fail.');
+		})
+		.catch((err) => console.error(err));
 	},
 	filterTag(value, row) {
       return row.correct === value;
@@ -158,7 +174,6 @@ export default {
 	.then(res => { return res.json() })
 	.then(originData => {
 		if(originData.success) {
-			console.log(originData)
 			if(originData.data) {
 				for (var i = 0; i < originData.data.length; i++){
 					this.wordList.push({word: originData.data[i].word, definition: originData.data[i].definition});

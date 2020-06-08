@@ -155,7 +155,7 @@ router.post("/addWord", (req, res) => {
 });
 router.post("/addTest", (req, res) => {
   let tempTest = new Test();
-  const { user, wordcardName, rightList, wrongList } = req.body;
+  const { user, wordcardName, questionList } = req.body;
   if (!user || !wordcardName) {
     return res.json({
       success: false,
@@ -164,8 +164,7 @@ router.post("/addTest", (req, res) => {
   }
   tempTest.user = user;
   tempTest.wordcardName = wordcardName;
-  tempTest.rightList = rightList;
-  tempTest.wrongList = wrongList;
+  tempTest.questionList = questionList;
   tempTest.save((err) => {
     if (err) {
       console.log(err);

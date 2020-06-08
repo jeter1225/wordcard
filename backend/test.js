@@ -10,12 +10,9 @@ const DataSchema = new Schema(
     wordcardName: {
       type: String,
     },
-    rightList: {
+    questionList: {
       type: Array,
     },
-    wrongList: {
-      type: Array,
-    }
   }
 );
 
