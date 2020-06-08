@@ -69,6 +69,9 @@ export default {
           case '/myWord':
             this.defaultActive = '2';
             break;
+		  case '/test':
+            this.defaultActive = '2';
+            break;
 		  case '/addWord':
             this.defaultActive = '2';
             break;
