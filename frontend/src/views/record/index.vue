@@ -6,16 +6,23 @@
       <el-col :span="8">
         <div class="record_left">
           <div><h1 style="font-size: 35px; font-family:Microsoft JhengHei; text-align: center; margin: 20px;">歷史考試紀錄</h1></div>
-          <div class="homepage_line_color2"></div>
+          <div class="homepage_line_color2" style="margin-bottom: 20px"></div>
           <!-- <div style="background-color : #4A4E69;">
             <h3 style="font-size: 25px; font-family:Microsoft JhengHei; text-align: left; margin: 20px; color: white">．考試一</h3>
           </div>
-          <div><h3 style="font-size: 25px; font-family:Microsoft JhengHei; text-align: left; margin: 20px;">．考試二</h3></div> -->
+          <div><h3 style="font-size: 25px; font-family:Microsoft JhengHei; text-align: left; margin: 20px;">．考試二</h3></div> 
           <el-row v-for="(id, index) in testList" :key="index">
             <div @click="deliverQuestionList(id.questionList)">
               <h3 style="font-size: 25px; font-family:Microsoft JhengHei; text-align: left; margin: 20px;">．{{id.wordcardName}}</h3>
             </div>
           </el-row>
+		  -->
+		  <el-row v-for="(id, index) in testList" :key="index">
+            <div @click="deliverQuestionList(id.questionList)">
+			  <el-button @click="deliverQuestionList(id.questionList)" style="width:75%; font-size: 25px; font-family:Microsoft JhengHei; margin-left:50px; text-align:left;" type="warning" plain>．{{id.wordcardName}}</el-button>
+            </div>
+          </el-row>
+		  
         </div>
       </el-col>
       <el-col :span="2">
@@ -24,7 +31,7 @@
       <el-col :span="14">
         <div class="record_right1">
           <div><h1 style="font-size: 35px; font-family:Microsoft JhengHei; text-align: center; margin: 20px;">該次考試單字</h1></div>
-          <el-table :data="showQuestionList" style="width: 100%; font-size:16px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 50px;" :row-style="{height:'50px'}">
+          <el-table ref="filterTable" :data="showQuestionList" style="width: 100%; font-size:16px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 50px;" :row-style="{height:'50px'}" height="350">
           <el-table-column prop="word" label="單字" width="180"></el-table-column>
           <el-table-column prop="definition" label="中文" width="180"></el-table-column>
           <el-table-column prop="answer" label="你的答案" width="180"></el-table-column>
@@ -51,7 +58,7 @@
 </template>
 <script>
 export default {
-  name: 'Record',
+  name: 'record',
   data() {
     return{
       testList: [],
@@ -60,15 +67,18 @@ export default {
   },
   methods: {
     deliverQuestionList(a) {
+	  this.$refs.filterTable.clearFilter();
       console.log(a[0]);
       this.showQuestionList = [];
       for (var i = 0; i < a.length; i++){
-            this.showQuestionList.push(a[i]);
-          }
+        this.showQuestionList.push(a[i]);
+      }
+    },
+	filterTag(value, row) {
+      return row.correct === value;
     },
   },
   mounted: async function(){
-    this.cardName = this.$route.params.cardName;
     var temp = {user:"jeter1225"};
     await fetch("http://localhost:3002/api/getTest", {
       method: 'POST',
@@ -119,7 +129,6 @@ export default {
   background-color: white
   height:300px
   margin-top:40px
-  overflow : auto
 }
 .record_right2 {
   background-color: #F2E9E4
