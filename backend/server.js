@@ -154,9 +154,9 @@ router.post("/addWord", (req, res) => {
   return res.json({ success: true });
 });
 router.post("/getTest", (req, res) => {
-  const { user, wordcardName } = req.body;
-  var a = { user: user, wordcardName: wordcardName };
-  Word.find(a, (err, data) => {
+  const { user } = req.body;
+  var a = { user: user };
+  Test.find(a, (err, data) => {
     if (err) return res.json({ success: false, error: err });
     // console.log(data)
     return res.json({ success: true, data: data });
