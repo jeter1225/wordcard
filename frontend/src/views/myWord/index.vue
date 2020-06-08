@@ -89,7 +89,7 @@ export default {
   methods: {
     async deleteWordCard() {
       if (confirm('確認要刪除小卡嗎?(刪除後不可復原)')) {
-        await fetch('http://localhost:3002/api/deleteWordcard/jeter1225/' + this.cardName, {
+        await fetch('http://localhost:3002/api/deleteWordcard/' + localStorage.getItem('username') + '/' + this.cardName, {
           method: 'DELETE',
         })
           .then(res => {
@@ -104,7 +104,7 @@ export default {
         
 		for (var i = 0; i < this.wordList.length; i++){
 		  var wordName = this.wordList[i].word;
-		  await fetch('http://localhost:3002/api/deleteWord/jeter1225/' + this.cardName + '/' + wordName, {
+		  await fetch('http://localhost:3002/api/deleteWord/' + localStorage.getItem('username') + '/' + this.cardName + '/' + wordName, {
 			method: 'DELETE',
 			},
 		  )
@@ -123,7 +123,7 @@ export default {
       }
     },
 	async addWord() {
-		var tempWordlist = [{user:"jeter1225", wordcardName:this.cardName, word:this.word, definition:this.definition}];
+		var tempWordlist = [{user:localStorage.getItem('username'), wordcardName:this.cardName, word:this.word, definition:this.definition}];
 		await fetch("http://localhost:3002/api/addWord", {
 			method: 'POST',
 			body: JSON.stringify(tempWordlist),
@@ -145,7 +145,13 @@ export default {
   },
   async mounted() {
     this.cardName = this.$route.params.cardName;
-    var temp = { user: 'jeter1225', wordcardName: this.cardName };
+    var temp;
+    if (this.$route.params.isOfficial === true){
+      temp = { user: 'official', wordcardName: this.cardName };
+    }
+    else{
+      temp = { user: localStorage.getItem('username'), wordcardName: this.cardName };
+    }
     await fetch('http://localhost:3002/api/getWord', {
       method: 'POST',
       body: JSON.stringify(temp),

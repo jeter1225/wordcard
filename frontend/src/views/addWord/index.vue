@@ -115,7 +115,7 @@ export default {
 		this.checkEmpty();
 		if (this.inputErrorExist == true){ return; }
 		
-		var temp = {user:"jeter1225"}
+		var temp = {user:localStorage.getItem('username')}
 		await fetch("http://localhost:3002/api/getWordcard", {
 			method: 'POST',
 			body: JSON.stringify(temp),
@@ -145,10 +145,10 @@ export default {
 		}
 		if (this.inputErrorExist == true){ return; }
 		
-		var tempWordcard = {user:"jeter1225", name:this.cardname, numberOfWords:this.addWordList.length};
+		var tempWordcard = {user:localStorage.getItem('username'), name:this.cardname, numberOfWords:this.addWordList.length};
 		var tempWordlist = [];
 		for (var i = 0; i < this.addWordList.length; i++){
-		  tempWordlist.push({user:"jeter1225", wordcardName:this.cardname, word:this.addWordList[i].word, definition:this.addWordList[i].definition});
+		  tempWordlist.push({user:localStorage.getItem('username'), wordcardName:this.cardname, word:this.addWordList[i].word, definition:this.addWordList[i].definition});
 		}
 		await fetch("http://localhost:3002/api/addWordcard", {
 			method: 'POST',

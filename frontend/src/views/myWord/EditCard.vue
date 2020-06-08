@@ -116,7 +116,7 @@ export default {
 	  
 	  if (confirm('確認要改動嗎?')) {
 	    // 先刪掉
-        await fetch('http://localhost:3002/api/deleteWordcard/jeter1225/' + this.cardName, {
+        await fetch('http://localhost:3002/api/deleteWordcard/' + localStorage.getItem('username') + '/' + this.cardName, {
           method: 'DELETE',
         })
         .then(res => {
@@ -131,7 +131,7 @@ export default {
 		
 		for (var i = 0; i < this.wordList.length; i++){
 		  var wordName = this.wordList[i].word;
-		  await fetch('http://localhost:3002/api/deleteWord/jeter1225/' + this.cardName + '/' + wordName, {
+		  await fetch('http://localhost:3002/api/deleteWord/' + localStorage.getItem('username') + '/' + this.cardName + '/' + wordName, {
 			method: 'DELETE',
 			},
 		  )
@@ -147,10 +147,10 @@ export default {
 		}
 		
 		// 再新增
-		var tempWordcard = {user:"jeter1225", name:this.cardName, numberOfWords:this.newWordList.length};
+		var tempWordcard = {user:localStorage.getItem('username'), name:this.cardName, numberOfWords:this.newWordList.length};
 		var tempWordlist = [];
 		for (var i = 0; i < this.newWordList.length; i++){
-		  tempWordlist.push({user:"jeter1225", wordcardName:this.cardName, word:this.newWordList[i].word, definition:this.newWordList[i].definition});
+		  tempWordlist.push({user:localStorage.getItem('username'), wordcardName:this.cardName, word:this.newWordList[i].word, definition:this.newWordList[i].definition});
 		}
 		await fetch("http://localhost:3002/api/addWordcard", {
 			method: 'POST',
@@ -194,7 +194,7 @@ export default {
   },
   async mounted() {
     this.cardName = this.$route.params.cardName;
-    var temp = { user: 'jeter1225', wordcardName: this.cardName };
+    var temp = { user: localStorage.getItem('username'), wordcardName: this.cardName };
     await fetch('http://localhost:3002/api/getWord', {
       method: 'POST',
       body: JSON.stringify(temp),

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div><h1 style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;">RECORD</h1></div>
+    <div><h1 style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;">考試紀錄</h1></div>
     <div class="homepage_line_color"></div>
     <el-row>
       <el-col :span="8">
@@ -95,7 +95,7 @@ export default {
     },
   },
   mounted: async function(){
-    var temp = {user:"jeter1225"};
+    var temp = {user:localStorage.getItem('username')};
     await fetch("http://localhost:3002/api/getTest", {
       method: 'POST',
       body: JSON.stringify(temp),

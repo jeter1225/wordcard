@@ -2,7 +2,7 @@
   <div>
     <el-row>
       <el-col :span="12">
-	    <div><h1 style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;">WORD</h1></div>
+	    <div><h1 style="font-size: 40px; font-family:Microsoft JhengHei; padding-left: 50px;">你的單字本</h1></div>
 		<div class="homepage_line_color"></div>
 	  </el-col>
 	  <el-col :span="12">
@@ -17,7 +17,7 @@
 	
 	<el-row>
       <el-col v-for="(card, index) in cardList" :key="index" :span="8" :offset="2" style="margin-top: 100px;">
-	  <router-link v-bind:to="{name:'myWord', params:{cardName: card.name}}" style="text-decoration:none;">
+	  <router-link v-bind:to="{name:'myWord', params:{cardName: card.name, isOfficial: false}}" style="text-decoration:none;">
         <el-card :body-style="{ padding: '0px' }" shadow="hover" style="background-color:#F2E9E4; border-color:#272727;">
           <div style="padding: 14px;">
             <span style="font-size: 40px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 20px;">{{ card.name }}</span>
@@ -41,7 +41,7 @@ export default {
   methods: {
   },
   mounted: async function(){
-    var temp = {user:"jeter1225"}
+    var temp = {user:localStorage.getItem('username')}
 	await fetch("http://localhost:3002/api/getWordcard", {
         method: 'POST',
         body: JSON.stringify(temp),

@@ -111,7 +111,7 @@ export default {
 	  if (this.questionNo == (this.questionList.length - 1)){
 	    this.showResult = 0;
 		
-		var tempTest = {user:"jeter1225", wordcardName: this.cardName, questionList: this.questionList}
+		var tempTest = {user:localStorage.getItem('username'), wordcardName: this.cardName, questionList: this.questionList}
 		await fetch("http://localhost:3002/api/addTest", {
 			method: 'POST',
 			body: JSON.stringify(tempTest),
@@ -147,7 +147,7 @@ export default {
 		  this.questionList.splice(i, 1);
 		}
 	    this.showResult = 1;
-		var tempTest = {user:"jeter1225", wordcardName: this.cardName, questionList: this.questionList}
+		var tempTest = {user:localStorage.getItem('username'), wordcardName: this.cardName, questionList: this.questionList}
 		await fetch("http://localhost:3002/api/addTest", {
 			method: 'POST',
 			body: JSON.stringify(tempTest),
@@ -168,7 +168,7 @@ export default {
   },
   mounted: async function(){
     this.cardName = this.$route.params.cardName;
-    var temp = {user:"jeter1225", wordcardName: this.cardName}
+    var temp = {user:localStorage.getItem('username'), wordcardName: this.cardName}
 	await fetch("http://localhost:3002/api/getWord", {
 		method: 'POST',
 		body: JSON.stringify(temp),

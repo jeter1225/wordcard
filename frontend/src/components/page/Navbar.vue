@@ -9,17 +9,17 @@
       text-color="white"
       style="font-family:Microsoft JhengHei; font-weight: bold"
     >
-      <el-menu-item index="1">Home</el-menu-item>
-      <el-menu-item index="2">Card</el-menu-item>
-      <el-menu-item index="3">Record</el-menu-item>
+      <el-menu-item index="1">首頁</el-menu-item>
+      <el-menu-item index="2">單字本</el-menu-item>
+      <el-menu-item index="3">考試紀錄</el-menu-item>
     </el-menu>
     <div
       style="position: relative; top: -42px; left: 20px; color: white; font-size: 20px; font-family:Microsoft JhengHei; width: 500px; font-weight: bold"
-    >WORDCARD</div>
+    >SDM專用單字小卡系統</div>
     <el-button
       style="position: relative; top: -75px; left: 880px;"
       @click="logoutVisible = true"
-    >Hi, {{username}}</el-button>
+    >嗨, {{username}}</el-button>
 
     <el-dialog
       :visible.sync="logoutVisible"
