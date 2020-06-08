@@ -1,6 +1,5 @@
 <template>
   <div>
-    <div v-if="edit===false">
       <el-row>
         <el-col :span="16">
           <h1
@@ -8,12 +7,13 @@
           >{{ this.cardName }}</h1>
         </el-col>
         <el-col :span="4">
+		  <router-link v-bind:to="{name:'editCard', params:{cardName: cardName}}" style="text-decoration:none;">
           <el-button
             style="position:absolute; top: 30%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold"
             icon="el-icon-edit"
             round
-            @click="editWordcard()"
           >編輯小卡</el-button>
+		  </router-link>
         </el-col>
         <el-col :span="4">
           <el-button
@@ -131,15 +131,9 @@
       <br />
       <br />
       <br />
-    </div>
-    <div v-else>
-      <edit-card :cardname="cardName" :edit.sync="edit" />
-    </div>
   </div>
 </template>
 <script>
-import EditCard from './EditCard.vue';
-
 export default {
   name: 'myWord',
   data() {
@@ -147,12 +141,8 @@ export default {
       word: '',
       definition: '',
       cardName: '',
-      wordList: [],
-      edit: false,
+      wordList: []
     };
-  },
-  components: {
-    EditCard,
   },
   methods: {
     async deleteWordCard() {
@@ -189,12 +179,7 @@ export default {
 		
 		this.$router.push('/word');
       }
-    },
-    editWordcard() {
-      console.log(this.cardName);
-      //   this.$router.push('/edit');
-      this.edit = true;
-    },
+    }
   },
   async mounted() {
     this.cardName = this.$route.params.cardName;

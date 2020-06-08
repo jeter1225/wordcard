@@ -10,7 +10,7 @@
       style="font-family:Microsoft JhengHei; font-weight: bold"
     >
       <el-menu-item index="1">Home</el-menu-item>
-      <el-menu-item index="2">Word</el-menu-item>
+      <el-menu-item index="2">Card</el-menu-item>
       <el-menu-item index="3">Record</el-menu-item>
     </el-menu>
     <div
@@ -67,6 +67,12 @@ export default {
             this.defaultActive = '2';
             break;
           case '/myWord':
+            this.defaultActive = '2';
+            break;
+		  case '/addWord':
+            this.defaultActive = '2';
+            break;
+		  case '/editCard':
             this.defaultActive = '2';
             break;
           case '/record':

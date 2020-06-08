@@ -4,6 +4,7 @@ import Homepage from './views/homepage/index.vue';
 import Word from './views/word/index.vue';
 import AddWord from './views/addWord/index.vue';
 import MyWord from './views/myWord/index.vue';
+import EditCard from './views/myWord/EditCard.vue';
 import Test from './views/test/index.vue';
 import Page from './components/page/index.vue';
 import Record from './views/record/index.vue';
@@ -44,6 +45,11 @@ const router = new Router({
           path: '/myWord',
           name: 'myWord',
           component: MyWord,
+        },
+		{
+          path: '/editCard',
+          name: 'editCard',
+          component: EditCard,
         },
 		    {
           path: '/test',
