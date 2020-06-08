@@ -181,7 +181,7 @@ export default {
 		})
 		.catch((err) => console.error(err));
 		this.$router.push("/word");
-	},
+	}
   }
 };
 </script>

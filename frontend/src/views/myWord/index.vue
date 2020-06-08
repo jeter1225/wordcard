@@ -70,62 +70,6 @@
         </router-link>
       </div>
 
-      <el-row style="width: 70%; margin:0px auto; margin-top: 50px;">
-        <el-col :span="5">
-          <div>
-            <h1 style="font-size: 20px; font-family:Microsoft JhengHei; padding-left: 50px;">新增詞彙</h1>
-          </div>
-        </el-col>
-        <el-col :span="15">
-          <div>
-            <div>
-              <h1 style="font-size: 20px; font-family:Microsoft JhengHei; padding-left: 50px;"></h1>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row style="width: 70%; margin:0px auto;">
-        <el-col :span="5">
-          <div>
-            <h1 style="font-size: 20px; font-family:Microsoft JhengHei; padding-left: 50px;">Word</h1>
-          </div>
-        </el-col>
-        <el-col :span="10">
-          <div>
-            <el-input placeholder="请输入内容" v-model="word" clearable></el-input>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row style="width: 70%; margin:0px auto;">
-        <el-col :span="5">
-          <div>
-            <h1
-              style="font-size: 20px; font-family:Microsoft JhengHei; padding-left: 50px;"
-            >Definition</h1>
-          </div>
-        </el-col>
-        <el-col :span="10">
-          <div>
-            <el-input placeholder="请输入内容" v-model="definition" clearable></el-input>
-          </div>
-        </el-col>
-        <el-col :span="5">
-          <div>
-            <div style="display: flex; justify-content: center; align-items: center">
-              <router-link to="/">
-                <el-button
-                  type="info"
-                  onclick
-                  style="display: inline-block; margin-top: 50px; width: 40px; height: 40px; font-size: 15px"
-                  icon="el-icon-plus"
-                  circle
-                ></el-button>
-              </router-link>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-
       <br />
       <br />
       <br />
@@ -138,8 +82,6 @@ export default {
   name: 'myWord',
   data() {
     return {
-      word: '',
-      definition: '',
       cardName: '',
       wordList: []
     };
@@ -179,7 +121,27 @@ export default {
 		
 		this.$router.push('/word');
       }
-    }
+    },
+	async addWord() {
+		var tempWordlist = [{user:"jeter1225", wordcardName:this.cardName, word:this.word, definition:this.definition}];
+		await fetch("http://localhost:3002/api/addWord", {
+			method: 'POST',
+			body: JSON.stringify(tempWordlist),
+			headers: {
+				'Content-Type': 'application/json'
+		}})
+		.then(res => { return res.json() })
+		.then(originData => {
+			if(originData.success) {
+				console.log("successfully. ");
+			}
+			else
+				alert('Fail.');
+		})
+		.catch((err) => console.error(err));
+		
+		this.$router.push({name:'myWord', params:{cardName: this.cardName}});
+	}
   },
   async mounted() {
     this.cardName = this.$route.params.cardName;
