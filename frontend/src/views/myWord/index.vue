@@ -169,7 +169,25 @@ export default {
             } else alert('Fail.');
           })
           .catch(err => console.error(err));
-        this.$router.push('/word');
+        
+		for (var i = 0; i < this.wordList.length; i++){
+		  var wordName = this.wordList[i].word;
+		  await fetch('http://localhost:3002/api/deleteWord/jeter1225/' + this.cardName + '/' + wordName, {
+			method: 'DELETE',
+			},
+		  )
+		  .then(res => {
+			return res.json();
+		  })
+		  .then(originData => {
+			if (originData.success) {
+			  console.log('successfully. ');
+			} else alert('Fail.');
+		  })
+		  .catch(err => console.error(err));
+		}
+		
+		this.$router.push('/word');
       }
     },
     editWordcard() {
