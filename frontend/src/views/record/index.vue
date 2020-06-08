@@ -7,10 +7,7 @@
         <div class="record_left">
           <div><h1 style="font-size: 35px; font-family:Microsoft JhengHei; text-align: center; margin: 20px;">歷史考試紀錄</h1></div>
           <div class="homepage_line_color2" style="margin-bottom: 20px"></div>
-          <!-- <div style="background-color : #4A4E69;">
-            <h3 style="font-size: 25px; font-family:Microsoft JhengHei; text-align: left; margin: 20px; color: white">．考試一</h3>
-          </div>
-          <div><h3 style="font-size: 25px; font-family:Microsoft JhengHei; text-align: left; margin: 20px;">．考試二</h3></div> 
+          <!-- 
           <el-row v-for="(id, index) in testList" :key="index">
             <div @click="deliverQuestionList(id.questionList)">
               <h3 style="font-size: 25px; font-family:Microsoft JhengHei; text-align: left; margin: 20px;">．{{id.wordcardName}}</h3>
@@ -19,7 +16,7 @@
 		  -->
 		  <el-row v-for="(id, index) in testList" :key="index">
             <div @click="deliverQuestionList(id.questionList)">
-			  <el-button @click="deliverQuestionList(id.questionList)" style="width:75%; font-size: 25px; font-family:Microsoft JhengHei; margin-left:50px; text-align:left;" type="warning" plain>．{{id.wordcardName}}</el-button>
+			  <el-button @click="deliverQuestionList(id.questionList)" style="width:75%; font-size: 25px; font-family:Microsoft JhengHei; margin-left:50px; text-align:left;" icon="el-icon-price-tag" type="warning" plain>{{id.wordcardName}}</el-button>
             </div>
           </el-row>
 		  
@@ -31,7 +28,17 @@
       <el-col :span="14">
         <div class="record_right1">
           <div><h1 style="font-size: 35px; font-family:Microsoft JhengHei; text-align: center; margin: 20px;">該次考試單字</h1></div>
-          <el-table ref="filterTable" :data="showQuestionList" style="width: 100%; font-size:16px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 50px;" :row-style="{height:'50px'}" height="350">
+		  
+		  <p v-if="showResult == 1" style="font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 50px; float:left;">答題數:</p>
+		  <p v-if="showResult == 1" style="font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 5px; float:left; color: blue"> {{ result.answerNum }} </p>
+		  <p v-if="showResult == 1" style="font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 5px; float:left;">題，答對題數:</p>
+		  <p v-if="showResult == 1" style="font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 5px; float:left; color: blue"> {{ result.correctNum }} </p>
+		  <p v-if="showResult == 1" style="font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 5px; float:left;">題，正確率:</p>
+		  <p v-if="showResult == 1 & result.correctPercent >= 60" style="font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 5px; float:left; color: #00DB00"> {{ result.correctPercent }} </p>
+		  <p v-if="showResult == 1 & result.correctPercent < 60" style="font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 5px; float:left; color: red"> {{ result.correctPercent }} </p>
+		  <p v-if="showResult == 1" style="font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 5px; float:left;">%</p>
+		  
+          <el-table stripe ref="filterTable" :data="showQuestionList" style="width: 100%; font-size:16px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 50px;" :row-style="{height:'50px'}" height="350">
           <el-table-column prop="word" label="單字" width="180"></el-table-column>
           <el-table-column prop="definition" label="中文" width="180"></el-table-column>
           <el-table-column prop="answer" label="你的答案" width="180"></el-table-column>
@@ -63,16 +70,25 @@ export default {
     return{
       testList: [],
       showQuestionList: [],
+	  result: {answerNum: 0, correctNum: 0, correctPercent: 0},
+	  showResult: 0
     }
   },
   methods: {
     deliverQuestionList(a) {
+	  this.result = {answerNum: 0, correctNum: 0, correctPercent: 0};
+	  this.showResult = 1;
 	  this.$refs.filterTable.clearFilter();
       console.log(a[0]);
       this.showQuestionList = [];
       for (var i = 0; i < a.length; i++){
         this.showQuestionList.push(a[i]);
+		this.result.answerNum++;
+		if (a[i].correct == "回答正確"){
+		  this.result.correctNum++;
+		}
       }
+	  this.result.correctPercent = Math.round(100 * this.result.correctNum / this.result.answerNum);
     },
 	filterTag(value, row) {
       return row.correct === value;
@@ -91,7 +107,7 @@ export default {
       if(originData.success) {
         if(originData.data) {
           for (var i = 0; i < originData.data.length; i++){
-            this.testList.push(originData.data[i]);
+            this.testList.push(originData.data[originData.data.length - i - 1]);
           }
         }
       }

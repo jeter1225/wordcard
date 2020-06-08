@@ -39,7 +39,7 @@
 	<p v-if="showResult == 1 & result.correctPercent < 60" style="font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 5px; float:left; color: red"> {{ result.correctPercent }} </p>
 	<p v-if="showResult == 1" style="font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 5px; float:left;">%</p>
 	
-	<el-table v-if="showResult == 1" :data="questionList" style="width: 100%; font-size:16px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 50px;" :row-style="{height:'50px'}">
+	<el-table stripe v-if="showResult == 1" :data="questionList" style="width: 100%; font-size:16px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 50px;" :row-style="{height:'50px'}">
       <el-table-column prop="word" label="單字" width="180"></el-table-column>
       <el-table-column prop="definition" label="中文" width="180"></el-table-column>
 	  <el-table-column prop="answer" label="你的答案" width="180"></el-table-column>
@@ -54,23 +54,6 @@
       </template>
 	  </el-table-column>
     </el-table>
-	
-	<!--
-	<table v-if="showResult == 1" width="720px" style="border: 10px; font-size:16px; font-size:30px; font-family:Microsoft JhengHei; font-weight: bold;">
-	  <tr>
-　      <td style="width: 180px; height: 60px">單字</td>
-　      <td style="width: 180px;">中文</td>
-        <td style="width: 180px;">你的答案</td>
-        <td style="width: 180px;">正確與否</td>
-　    </tr>
-　    <tr v-for="question in questionList" :key="question">
-　      <td style="width: 180px; height: 60px">{{ question.word }}</td>
-　      <td style="width: 180px;">{{ question.definition }}</td>
-        <td style="width: 180px;">{{ question.answer }}</td>
-        <td style="width: 180px;">{{ question.correct }}</td>
-　    </tr>
-    </table>
-	-->
 	
 	<br>
 	
@@ -109,7 +92,7 @@ export default {
 	  tempList.sort(() => Math.random() - 0.5);
 	  this.questionList = tempList;
 	},
-	checkAnswer() {
+	async checkAnswer() {
 	  this.correctAnswer.word = this.questionList[this.questionNo].word;
 	  this.correctAnswer.definition = this.questionList[this.questionNo].definition;
 	  this.questionList[this.questionNo].answer = this.answer;
@@ -127,14 +110,7 @@ export default {
 	  }
 	  if (this.questionNo == (this.questionList.length - 1)){
 	    this.showResult = 0;
-	  }
-	  else{
-		this.questionNo++;
-	  }
-	},
-	async showGrade() {
-		this.result.correctPercent = 100 * this.result.correctNum / this.result.answerNum;
-		this.showResult = 1;
+		
 		var tempTest = {user:"jeter1225", wordcardName: this.cardName, questionList: this.questionList}
 		await fetch("http://localhost:3002/api/addTest", {
 			method: 'POST',
@@ -145,20 +121,48 @@ export default {
 		.then(res => { return res.json() })
 		.then(originData => {
 			if(originData.success) {
-				alert('Finished!.');
+				console.log('successfully. ');
 			}
 			else
 				alert('Fail.');
 		})
 		.catch((err) => console.error(err));
+	  }
+	  else{
+		this.questionNo++;
+	  }
+	},
+	async showGrade() {
+		this.result.correctPercent = Math.round(100 * this.result.correctNum / this.result.answerNum);
+		this.showResult = 1;
 	},
 	filterTag(value, row) {
       return row.correct === value;
     },
-	finishAdvance() {
+	async finishAdvance() {
 	  if (confirm('確認要提前結束測驗嗎?')) {
 	    this.result.correctPercent = Math.round(100 * this.result.correctNum / this.result.answerNum);
+		var tempLength = this.questionList.length;
+		for (var i = this.result.answerNum; i < tempLength; i++){
+		  this.questionList.splice(i, 1);
+		}
 	    this.showResult = 1;
+		var tempTest = {user:"jeter1225", wordcardName: this.cardName, questionList: this.questionList}
+		await fetch("http://localhost:3002/api/addTest", {
+			method: 'POST',
+			body: JSON.stringify(tempTest),
+			headers: {
+				'Content-Type': 'application/json'
+		}})
+		.then(res => { return res.json() })
+		.then(originData => {
+			if(originData.success) {
+				console.log('successfully. ');
+			}
+			else
+				alert('Fail.');
+		})
+		.catch((err) => console.error(err));
 	  }
 	}
   },
