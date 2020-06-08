@@ -78,7 +78,7 @@ export default {
   },
   methods: {
     addRow() {
-	  this.addWordList.push({word: "", definition: ""})
+	  this.addWordList.push({word: "", definition: ""});
 	},
 	checkEmpty() {
 	  var i;
@@ -108,6 +108,7 @@ export default {
 	  if (this.addWordList.length < 1){
 	    alert("至少要有一個單字!");
 		this.inputErrorExist = true;
+		this.addWordList.push({word: "", definition: ""});
 	  }
 	},
 	async addWordCard() {

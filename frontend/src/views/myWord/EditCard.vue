@@ -73,7 +73,8 @@ export default {
     return {
 	  cardName: "",
       wordList: [],
-	  newWordList: []
+	  newWordList: [],
+	  inputErrorExist: false
     };
   },
   methods: {
@@ -83,7 +84,36 @@ export default {
 	addWord() {
 	  this.newWordList.push({word: "", definition: ""});
 	},
+	checkEmpty() {
+	  var i;
+	  this.inputErrorExist = false;
+	  for (i = 0; i < this.newWordList.length; i++){
+	    if (this.newWordList[i].word == "" & this.newWordList[i].definition == ""){
+		  this.newWordList.splice(i, 1);
+		  i--;
+		  continue;
+		}
+		if (this.newWordList[i].word == "" & this.newWordList[i].definition != ""){
+		  alert(this.newWordList[i].definition + "的單字還未填寫!");
+		  this.inputErrorExist = true;
+		  break;
+		}
+		if (this.newWordList[i].definition == "" & this.newWordList[i].word != ""){
+		  alert(this.newWordList[i].word + "的定義還未填寫!");
+		  this.inputErrorExist = true;
+		  break;
+		}
+	  }
+	  if (this.newWordList.length < 1){
+	    alert("至少要有一個單字!");
+		this.inputErrorExist = true;
+		this.newWordList.push({word: "", definition: ""});
+	  }
+	},
 	async confirmChange() {
+	  this.checkEmpty();
+	  if (this.inputErrorExist == true){ return; }
+	  
 	  if (confirm('確認要改動嗎?')) {
 	    // 先刪掉
         await fetch('http://localhost:3002/api/deleteWordcard/jeter1225/' + this.cardName, {
