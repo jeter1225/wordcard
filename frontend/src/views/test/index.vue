@@ -30,11 +30,29 @@
 	  </el-col>
 	</el-row>
 	
-	<el-table v-if="showResult == 1" :data="questionList" style="width: 100%; font-size:16px; font-family:Microsoft JhengHei; font-weight: bold;" :row-style="{height:'50px'}">
+	<p v-if="showResult == 1" style="font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 50px; float:left;">你總共回答了</p>
+	<p v-if="showResult == 1" style="font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 5px; float:left; color: blue"> {{ result.answerNum }} </p>
+	<p v-if="showResult == 1" style="font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 5px; float:left;">題，答對</p>
+	<p v-if="showResult == 1" style="font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 5px; float:left; color: blue"> {{ result.correctNum }} </p>
+	<p v-if="showResult == 1" style="font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 5px; float:left;">題，正確率</p>
+	<p v-if="showResult == 1 & result.correctPercent >= 60" style="font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 5px; float:left; color: #00DB00"> {{ result.correctPercent }} </p>
+	<p v-if="showResult == 1 & result.correctPercent < 60" style="font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 5px; float:left; color: red"> {{ result.correctPercent }} </p>
+	<p v-if="showResult == 1" style="font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 5px; float:left;">%</p>
+	
+	<el-table v-if="showResult == 1" :data="questionList" style="width: 100%; font-size:16px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 50px;" :row-style="{height:'50px'}">
       <el-table-column prop="word" label="單字" width="180"></el-table-column>
       <el-table-column prop="definition" label="中文" width="180"></el-table-column>
 	  <el-table-column prop="answer" label="你的答案" width="180"></el-table-column>
-	  <el-table-column prop="correct" label="正確與否" width="180" style="color: red"></el-table-column>
+	  <el-table-column prop="correct" label="正確與否" width="180"
+	  :filters="[{ text: '回答正確', value: '回答正確' }, { text: '回答錯誤', value: '回答錯誤' }]"
+      :filter-method="filterTag"
+      filter-placement="bottom-end">
+	  <template slot-scope="scope">
+        <el-tag
+          :type="scope.row.correct === '回答正確' ? 'success' : 'danger'"
+          disable-transitions>{{scope.row.correct}}</el-tag>
+      </template>
+	  </el-table-column>
     </el-table>
 	
 	<!--
@@ -57,8 +75,7 @@
 	<br>
 	
 	<div v-if="showResult == -1">
-	  <el-button type="info" style="position:absolute; margin-right: 180px; right:17%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" icon="el-icon-d-arrow-right" @click="checkAnswer" round>跳過問題</el-button>
-	  <el-button type="danger" style="position:absolute; right:17%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" icon="el-icon-finished" round>結束考試</el-button>
+	  <el-button type="danger" style="position:absolute; right:17%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" icon="el-icon-finished" @click="finishAdvance" round>結束考試</el-button>
 	</div>
 	
 	<br>
@@ -82,6 +99,7 @@ export default {
 	  correctFlag: -1,
 	  correctAnswer: {word: "", definition: ""},
 	  showResult: -1,
+	  result: {answerNum: 0, correctNum: 0, correctPercent: 0},
 	  answerList: []
 	}
   },
@@ -95,10 +113,12 @@ export default {
 	  this.correctAnswer.word = this.questionList[this.questionNo].word;
 	  this.correctAnswer.definition = this.questionList[this.questionNo].definition;
 	  this.questionList[this.questionNo].answer = this.answer;
+	  this.result.answerNum++;
 	  if (this.answer == this.questionList[this.questionNo].definition){
 		this.answer="";
 		this.correctFlag = 1;
 		this.questionList[this.questionNo].correct = "回答正確";
+		this.result.correctNum++;
 	  }
 	  else {
 		this.answer="";
@@ -113,7 +133,17 @@ export default {
 	  }
 	},
 	showGrade() {
+	  this.result.correctPercent = 100 * this.result.correctNum / this.result.answerNum;
 	  this.showResult = 1;
+	},
+	filterTag(value, row) {
+      return row.correct === value;
+    },
+	finishAdvance() {
+	  if (confirm('確認要提前結束測驗嗎?')) {
+	    this.result.correctPercent = Math.round(100 * this.result.correctNum / this.result.answerNum);
+	    this.showResult = 1;
+	  }
 	}
   },
   mounted: async function(){
