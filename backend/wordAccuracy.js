@@ -10,7 +10,7 @@ const DataSchema = new Schema(
     wordcardName: {
       type: String,
     },
-    accuracy: {
+    accuracyList: {
       type: Array,
     },
   }

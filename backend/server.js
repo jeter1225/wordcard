@@ -201,10 +201,10 @@ router.post("/addWordAccuracy", (req, res) => {
       error: "INVALID INPUTS",
     });
   }
-  tempTest.user = user;
-  tempTest.wordcardName = wordcardName;
-  tempTest.accuracyList = accuracyList;
-  tempTest.save((err) => {
+  tempWordAccuracy.user = user;
+  tempWordAccuracy.wordcardName = wordcardName;
+  tempWordAccuracy.accuracyList = accuracyList;
+  tempWordAccuracy.save((err) => {
     if (err) {
       console.log(err);
       return res.json({ success: false, error: err });

@@ -180,6 +180,28 @@ export default {
 				alert('Fail.');
 		})
 		.catch((err) => console.error(err));
+		
+		tempWordlist = [];
+		for (var i = 0; i < this.addWordList.length; i++){
+		  tempWordlist.push({word:this.addWordList[i].word, definition:this.addWordList[i].definition, answerNum:0, correctNum: 0});
+		}
+		var tempWordAccuracy = {user:localStorage.getItem('username'), wordcardName:this.cardname, accuracyList: tempWordlist}
+		await fetch("http://localhost:3002/api/addWordAccuracy", {
+			method: 'POST',
+			body: JSON.stringify(tempWordAccuracy),
+			headers: {
+				'Content-Type': 'application/json'
+		}})
+		.then(res => { return res.json() })
+		.then(originData => {
+			if(originData.success) {
+				console.log("successfully. ");
+			}
+			else
+				alert('Fail.');
+		})
+		.catch((err) => console.error(err));
+		
 		this.$router.push("/word");
 	}
   }
