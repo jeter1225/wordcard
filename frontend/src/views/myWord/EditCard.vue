@@ -82,7 +82,7 @@ export default {
 	  this.newWordList.splice(index, 1);
 	},
 	addWord() {
-	  this.newWordList.push({word: "", definition: ""});
+	  this.newWordList.push({word: "", definition: "", answerNum: 0, correctNum: 0});
 	},
 	checkEmpty() {
 	  var i;
@@ -107,7 +107,7 @@ export default {
 	  if (this.newWordList.length < 1){
 	    alert("至少要有一個單字!");
 		this.inputErrorExist = true;
-		this.newWordList.push({word: "", definition: ""});
+		this.newWordList.push({word: "", definition: "", answerNum: 0, correctNum: 0});
 	  }
 	},
 	async confirmChange() {
@@ -183,6 +183,41 @@ export default {
 		})
 		.catch((err) => console.error(err));
 		
+		//再刪再新增(怒)
+		await fetch('http://localhost:3002/api/deleteWordAccuracy/' + localStorage.getItem('username') + '/' + this.cardName, {
+          method: 'DELETE',
+        })
+        .then(res => {
+          return res.json();
+        })
+        .then(originData => {
+          if (originData.success) {
+            console.log('successfully. ');
+          } else alert('Fail.');
+        })
+        .catch(err => console.error(err));
+		
+		tempWordlist = [];
+		for (var i = 0; i < this.newWordList.length; i++){
+		  tempWordlist.push({word:this.newWordList[i].word, definition:this.newWordList[i].definition, answerNum:this.newWordList[i].answerNum, correctNum:this.newWordList[i].correctNum});
+		}
+		var tempWordAccuracy = {user:localStorage.getItem('username'), wordcardName:this.cardName, accuracyList:tempWordlist}
+		await fetch("http://localhost:3002/api/addWordAccuracy", {
+			method: 'POST',
+			body: JSON.stringify(tempWordAccuracy),
+			headers: {
+				'Content-Type': 'application/json'
+		}})
+		.then(res => { return res.json() })
+		.then(originData => {
+			if(originData.success) {
+				console.log("successfully. ");
+			}
+			else
+				alert('Fail.');
+		})
+		.catch((err) => console.error(err));
+		
 		this.$router.push({name:'myWord', params:{cardName: this.cardName}});
       }
 	},
@@ -216,9 +251,32 @@ export default {
       })
       .catch(err => console.error(err));
 	
-	for (var i = 0; i < this.wordList.length; i++){
-	  this.newWordList.push({ word:  this.wordList[i].word, definition: this.wordList[i].definition});
+	var tempWordlist = [];
+	await fetch('http://localhost:3002/api/getWordAccuracy', {
+	  method: 'POST',
+	  body: JSON.stringify(temp),
+	  headers: {
+		'Content-Type': 'application/json',
+	  },
+	})
+	  .then(res => {
+		return res.json();
+	  })
+	  .then(originData => {
+		if (originData.success) {
+		  if (originData.data) {
+		    for (var i = 0; i < originData.data.length; i++) {
+              tempWordlist.push(originData.data[i]);
+            }
+		  }
+		} else alert('Fail.');
+	  })
+	  .catch(err => console.error(err));
+	  
+	for (var i = 0; i < tempWordlist[0].accuracyList.length; i++){
+	  this.newWordList.push(tempWordlist[0].accuracyList[i]);
 	}
+	  
   },
 };
 </script>

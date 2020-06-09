@@ -69,12 +69,27 @@
           >我要考試</el-button>
         </router-link>
       </div>
+	  
+	<br />
+    <br />
+    <br />
+	<br />
+	<br />
+    <br />
+	
+	<p style="font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold; float:left; margin-left: 15%;">單字測驗正確率統計:</p>
+	
+	<el-table stripe :data="accuracyList" style="width: 100%; font-size:16px; font-family:Microsoft JhengHei; font-weight: bold; margin-left: 15%;" :row-style="{height:'50px'}">
+	  <el-table-column prop="word" label="單字" width="180"></el-table-column>
+	  <el-table-column prop="definition" label="中文" width="180"></el-table-column>
+	  <el-table-column prop="correctPercent" label="正確率(%)" width="180"></el-table-column>
+    </el-table>
 
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
   </div>
 </template>
 <script>
@@ -83,7 +98,8 @@ export default {
   data() {
     return {
       cardName: '',
-      wordList: []
+      wordList: [],
+	  accuracyList: []
     };
   },
   methods: {
@@ -119,6 +135,18 @@ export default {
 		  .catch(err => console.error(err));
 		}
 		
+		await fetch('http://localhost:3002/api/deleteWordAccuracy/' + localStorage.getItem('username') + '/' + this.cardName, {
+          method: 'DELETE',
+        })
+        .then(res => {
+          return res.json();
+        })
+        .then(originData => {
+          if (originData.success) {
+            console.log('successfully. ');
+          } else alert('Fail.');
+        })
+        .catch(err => console.error(err));
 		this.$router.push('/word');
       }
     },
@@ -173,6 +201,37 @@ export default {
         } else alert('Fail.');
       })
       .catch(err => console.error(err));
+	  
+	var tempWordlist = [];
+	await fetch('http://localhost:3002/api/getWordAccuracy', {
+	  method: 'POST',
+	  body: JSON.stringify(temp),
+	  headers: {
+		'Content-Type': 'application/json',
+	  },
+	})
+	  .then(res => {
+		return res.json();
+	  })
+	  .then(originData => {
+		if (originData.success) {
+		  if (originData.data) {
+		    for (var i = 0; i < originData.data.length; i++) {
+              tempWordlist.push(originData.data[i]);
+            }
+		  }
+		} else alert('Fail.');
+	  })
+	  .catch(err => console.error(err));
+	  
+	for (var i = 0; i < tempWordlist[0].accuracyList.length; i++){
+	  this.accuracyList.push(tempWordlist[0].accuracyList[i]);
+	  this.accuracyList[i].correctPercent = Math.round(100 * this.accuracyList[i].correctNum / this.accuracyList[i].answerNum);
+	}
+	
+	this.accuracyList = this.accuracyList.sort(function (a, b) {
+      return a.correctPercent > b.correctPercent ? 1 : -1;
+    });
   },
 };
 </script>

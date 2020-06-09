@@ -83,7 +83,8 @@ export default {
 	  correctAnswer: {word: "", definition: ""},
 	  showResult: -1,
 	  result: {answerNum: 0, correctNum: 0, correctPercent: 0},
-	  answerList: []
+	  answerList: [],
+	  accuracyList: []
 	}
   },
   methods: {
@@ -92,7 +93,7 @@ export default {
 	  tempList.sort(() => Math.random() - 0.5);
 	  this.questionList = tempList;
 	},
-	async checkAnswer() {
+	checkAnswer() {
 	  this.correctAnswer.word = this.questionList[this.questionNo].word;
 	  this.correctAnswer.definition = this.questionList[this.questionNo].definition;
 	  this.questionList[this.questionNo].answer = this.answer;
@@ -111,22 +112,8 @@ export default {
 	  if (this.questionNo == (this.questionList.length - 1)){
 	    this.showResult = 0;
 		
-		var tempTest = {user:localStorage.getItem('username'), wordcardName: this.cardName, questionList: this.questionList}
-		await fetch("http://localhost:3002/api/addTest", {
-			method: 'POST',
-			body: JSON.stringify(tempTest),
-			headers: {
-				'Content-Type': 'application/json'
-		}})
-		.then(res => { return res.json() })
-		.then(originData => {
-			if(originData.success) {
-				console.log('successfully. ');
-			}
-			else
-				alert('Fail.');
-		})
-		.catch((err) => console.error(err));
+		this.addTest();
+		this.modifyWordAccuracy();
 	  }
 	  else{
 		this.questionNo++;
@@ -139,7 +126,7 @@ export default {
 	filterTag(value, row) {
       return row.correct === value;
     },
-	async finishAdvance() {
+	finishAdvance() {
 	  if (confirm('確認要提前結束測驗嗎?')) {
 	    this.result.correctPercent = Math.round(100 * this.result.correctNum / this.result.answerNum);
 		var tempLength = this.questionList.length;
@@ -147,12 +134,17 @@ export default {
 		  this.questionList.splice(i, 1);
 		}
 	    this.showResult = 1;
-		var tempTest = {user:localStorage.getItem('username'), wordcardName: this.cardName, questionList: this.questionList}
-		await fetch("http://localhost:3002/api/addTest", {
-			method: 'POST',
-			body: JSON.stringify(tempTest),
-			headers: {
-				'Content-Type': 'application/json'
+		this.addTest();
+		this.modifyWordAccuracy();
+	  }
+	},
+	async addTest() {
+	  var tempTest = {user:localStorage.getItem('username'), wordcardName: this.cardName, questionList: this.questionList}
+	  await fetch("http://localhost:3002/api/addTest", {
+		method: 'POST',
+		body: JSON.stringify(tempTest),
+		headers: {
+			'Content-Type': 'application/json'
 		}})
 		.then(res => { return res.json() })
 		.then(originData => {
@@ -163,7 +155,96 @@ export default {
 				alert('Fail.');
 		})
 		.catch((err) => console.error(err));
+		
+	},
+	async modifyWordAccuracy() {
+	  // 讀
+	  var temp = { user: localStorage.getItem('username'), wordcardName: this.cardName };
+	  var tempWordlist = [];
+	  await fetch('http://localhost:3002/api/getWordAccuracy', {
+		  method: 'POST',
+		  body: JSON.stringify(temp),
+		  headers: {
+			'Content-Type': 'application/json',
+		  },
+		})
+	  .then(res => {
+		return res.json();
+	  })
+	  .then(originData => {
+		if (originData.success) {
+		  if (originData.data) {
+		    for (var i = 0; i < originData.data.length; i++) {
+              tempWordlist.push(originData.data[i]);
+            }
+		  }
+		} else alert('Fail.');
+	  })
+	  .catch(err => console.error(err));
+	  
+	  for (var i = 0; i < tempWordlist[0].accuracyList.length; i++){
+	    this.accuracyList.push(tempWordlist[0].accuracyList[i]);
+	    this.accuracyList[i].correctPercent = Math.round(100 * this.accuracyList[i].correctNum / this.accuracyList[i].answerNum);
 	  }
+	  
+	  // 刪
+	  await fetch('http://localhost:3002/api/deleteWordAccuracy/' + localStorage.getItem('username') + '/' + this.cardName, {
+        method: 'DELETE',
+      })
+      .then(res => {
+        return res.json();
+      })
+      .then(originData => {
+        if (originData.success) {
+          console.log('successfully. ');
+        } else alert('Fail.');
+      })
+      .catch(err => console.error(err));
+	  
+	  // 改
+	  for (var i = 0; i < this.questionList.length; i++){
+	    if (this.questionList[i].correct == "回答正確"){
+		  for (var j = 0; j < this.accuracyList.length; j++){
+		    if (this.accuracyList[j].word == this.questionList[i].word){
+			  this.accuracyList[j].answerNum++;
+			  this.accuracyList[j].correctNum++;
+			  break;
+			}
+		  }
+		} else {
+		  if (this.questionList[i].correct == "回答錯誤") {
+		    for (var j = 0; j < this.accuracyList.length; j++){
+		      if (this.accuracyList[j].word == this.questionList[i].word){
+			    this.accuracyList[j].answerNum++;
+			    break;
+			  }
+		    }
+		  }
+		}
+	  }
+	  
+	  // 寫
+	  tempWordlist = [];
+	  for (var i = 0; i < this.accuracyList.length; i++){
+		tempWordlist.push({word:this.accuracyList[i].word, definition:this.accuracyList[i].definition, answerNum:this.accuracyList[i].answerNum, correctNum:this.accuracyList[i].correctNum});
+	  }
+	  var tempWordAccuracy = {user:localStorage.getItem('username'), wordcardName:this.cardName, accuracyList:tempWordlist}
+	  await fetch("http://localhost:3002/api/addWordAccuracy", {
+	  	method: 'POST',
+		body: JSON.stringify(tempWordAccuracy),
+		headers: {
+		  'Content-Type': 'application/json'
+	  }})
+	  .then(res => { return res.json() })
+	  .then(originData => {
+		if(originData.success) {
+			console.log("successfully. ");
+		}
+		else
+			alert('Fail.');
+	  })
+	  .catch((err) => console.error(err));
+	  
 	}
   },
   mounted: async function(){
