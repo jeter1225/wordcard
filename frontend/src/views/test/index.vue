@@ -60,6 +60,9 @@
 	<div v-if="showResult == -1">
 	  <el-button type="danger" style="position:absolute; right:17%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" icon="el-icon-finished" @click="finishAdvance" round>結束考試</el-button>
 	</div>
+	<div v-if="showResult == 1">
+	  <el-button type="info" style="position:absolute; right:17%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold" icon="el-icon-refresh-right" @click="goBack" round>回到單字本</el-button>
+	</div>
 	
 	<br>
 	<br>
@@ -245,6 +248,9 @@ export default {
 	  })
 	  .catch((err) => console.error(err));
 	  
+	},
+	goBack() {
+	  this.$router.push({name:'myWord', params:{cardName: this.cardName}});
 	}
   },
   mounted: async function(){
