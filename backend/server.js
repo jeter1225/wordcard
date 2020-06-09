@@ -10,6 +10,7 @@ Grid.mongo = mongoose.mongo;
 const User = require("./user");
 const Wordcard = require("./wordcard");
 const Word = require("./word");
+const WordAccuracy = require("./wordAccuracy");
 const Test = require("./test");
 const auth = require("./config/auth");
 const userController = require("./api/user/controller/userController");
@@ -182,7 +183,35 @@ router.post("/addTest", (req, res) => {
     return res.json({ success: true });
   });
 });
-
+router.post("/getWordAccuracy", (req, res) => {
+  const { user, wordcardName } = req.body;
+  var a = { user: user, wordcardName: wordcardName };
+  WordAccuracy.find(a, (err, data) => {
+    if (err) return res.json({ success: false, error: err });
+    // console.log(data)
+    return res.json({ success: true, data: data });
+  });
+});
+router.post("/addWordAccuracy", (req, res) => {
+  let tempWordAccuracy = new WordAccuracy();
+  const { user, wordcardName, accuracyList } = req.body;
+  if (!user || !wordcardName) {
+    return res.json({
+      success: false,
+      error: "INVALID INPUTS",
+    });
+  }
+  tempTest.user = user;
+  tempTest.wordcardName = wordcardName;
+  tempTest.accuracyList = accuracyList;
+  tempTest.save((err) => {
+    if (err) {
+      console.log(err);
+      return res.json({ success: false, error: err });
+    }
+    return res.json({ success: true });
+  });
+});
 router.post("/register", userController.registerNewUser);
 router.post("/login", userController.loginUser);
 // router.get("/me", auth, userController.getUserDetails);
