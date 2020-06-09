@@ -212,6 +212,13 @@ router.post("/addWordAccuracy", (req, res) => {
     return res.json({ success: true });
   });
 });
+router.post("/updateWordAccuracy", (req, res) => {
+  const { user, wordcardName, update } = req.body; // update example : {numberOfWords:1000}
+  Word.findOneAndUpdate({ user: user, wordcardName: wordcardName }, update, (err) => {
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true });
+  });
+});
 router.post("/register", userController.registerNewUser);
 router.post("/login", userController.loginUser);
 // router.get("/me", auth, userController.getUserDetails);
