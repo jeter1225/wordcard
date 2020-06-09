@@ -219,6 +219,15 @@ router.post("/updateWordAccuracy", (req, res) => {
     return res.json({ success: true });
   });
 });
+router.delete("/deleteWordAccuracy/:user/:wordcardName", (req, res) => {
+  WordAccuracy.deleteOne(
+    { user: req.params.user, wordcardName: req.params.wordcardName },
+    (err) => {
+      if (err) return res.json({ success: false, error: err });
+      return res.json({ success: true });
+    }
+  );
+});
 router.post("/register", userController.registerNewUser);
 router.post("/login", userController.loginUser);
 // router.get("/me", auth, userController.getUserDetails);
