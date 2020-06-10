@@ -235,7 +235,12 @@ export default {
         .then(originData => {
           if (originData.success) {
             console.log('successfully. ');
-          } else alert('Fail.');
+          } else {
+            this.$message({
+              type: 'error',
+              message: 'FAIL.',
+            });
+          }
         })
         .catch(err => console.error(err));
     },
@@ -260,7 +265,12 @@ export default {
                 tempWordlist.push(originData.data[i]);
               }
             }
-          } else alert('Fail.');
+          } else {
+            this.$message({
+              type: 'error',
+              message: 'FAIL.',
+            });
+          }
         })
         .catch(err => console.error(err));
 
@@ -284,7 +294,12 @@ export default {
         .then(originData => {
           if (originData.success) {
             console.log('successfully. ');
-          } else alert('Fail.');
+          } else {
+            this.$message({
+              type: 'error',
+              message: 'FAIL.',
+            });
+          }
         })
         .catch(err => console.error(err));
 
@@ -338,7 +353,12 @@ export default {
         .then(originData => {
           if (originData.success) {
             console.log('successfully. ');
-          } else alert('Fail.');
+          } else {
+            this.$message({
+              type: 'error',
+              message: 'FAIL.',
+            });
+          }
         })
         .catch(err => console.error(err));
     },
@@ -366,7 +386,12 @@ export default {
               this.wordList.push({ word: originData.data[i].word, definition: originData.data[i].definition });
             }
           }
-        } else alert('Fail.');
+        } else {
+          this.$message({
+            type: 'error',
+            message: 'FAIL.',
+          });
+        }
       })
       .catch(err => console.error(err));
 

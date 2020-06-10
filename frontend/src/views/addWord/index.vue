@@ -110,7 +110,11 @@ export default {
       var i;
       this.inputErrorExist = false;
       if (this.cardname == '') {
-        alert('小卡名稱還未填寫!');
+        this.$notify({
+          title: '輸入不完全',
+          message: '小卡名稱還未填寫!',
+          type: 'warning',
+        });
         this.inputErrorExist = true;
         return;
       }
@@ -121,18 +125,33 @@ export default {
           continue;
         }
         if ((this.addWordList[i].word == '') & (this.addWordList[i].definition != '')) {
-          alert(this.addWordList[i].definition + '的單字還未填寫!');
+          this.$notify({
+            title: '輸入不完全',
+            message: `${this.addWordList[i].definition}的單字還未填寫!`,
+            type: 'warning',
+          });
+
           this.inputErrorExist = true;
           break;
         }
         if ((this.addWordList[i].definition == '') & (this.addWordList[i].word != '')) {
-          alert(this.addWordList[i].word + '的定義還未填寫!');
+          this.$notify({
+            title: '輸入不完全',
+            message: `${this.addWordList[i].word}的定義還未填寫!`,
+            type: 'warning',
+          });
+
           this.inputErrorExist = true;
           break;
         }
       }
       if (this.addWordList.length < 1) {
-        alert('至少要有一個單字!');
+        this.$notify({
+          title: '輸入不完全',
+          message: '至少要有一個單字!',
+          type: 'warning',
+        });
+
         this.inputErrorExist = true;
         this.addWordList.push({ word: '', definition: '' });
       }
@@ -156,18 +175,28 @@ export default {
         })
         .then(originData => {
           if (originData.success) {
-            console.log(originData);
+            // console.log(originData);
             if (originData.data) {
               for (var i = 0; i < originData.data.length; i++) {
                 this.cardNameList.push(originData.data[i].name);
               }
             }
-          } else alert('Fail.');
+          } else {
+            this.$message({
+              type: 'error',
+              message: 'FAIL.',
+            });
+          }
         })
         .catch(err => console.error(err));
       for (var i = 0; i < this.cardNameList.length; i++) {
         if (this.cardname == this.cardNameList[i]) {
-          alert('這個小卡名稱已經存在!');
+          this.$notify({
+            title: '名稱重複',
+            message: '這個小卡名稱已經存在!',
+            type: 'warning',
+          });
+
           this.inputErrorExist = true;
           break;
         }
@@ -203,7 +232,12 @@ export default {
         .then(originData => {
           if (originData.success) {
             console.log('successfully. ');
-          } else alert('Fail.');
+          } else {
+            this.$message({
+              type: 'error',
+              message: 'FAIL.',
+            });
+          }
         })
         .catch(err => console.error(err));
       await fetch('http://localhost:3002/api/addWord', {
@@ -219,7 +253,12 @@ export default {
         .then(originData => {
           if (originData.success) {
             console.log('successfully. ');
-          } else alert('Fail.');
+          } else {
+            this.$message({
+              type: 'error',
+              message: 'FAIL.',
+            });
+          }
         })
         .catch(err => console.error(err));
 
@@ -250,7 +289,12 @@ export default {
         .then(originData => {
           if (originData.success) {
             console.log('successfully. ');
-          } else alert('Fail.');
+          } else {
+            this.$message({
+              type: 'error',
+              message: 'FAIL.',
+            });
+          }
         })
         .catch(err => console.error(err));
 

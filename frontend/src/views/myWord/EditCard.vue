@@ -125,18 +125,30 @@ export default {
           continue;
         }
         if ((this.newWordList[i].word == '') & (this.newWordList[i].definition != '')) {
-          alert(this.newWordList[i].definition + '的單字還未填寫!');
+          this.$notify({
+            title: '輸入不完全',
+            message: `${this.newWordList[i].definition}的單字還未填寫!`,
+            type: 'warning',
+          });
           this.inputErrorExist = true;
           break;
         }
         if ((this.newWordList[i].definition == '') & (this.newWordList[i].word != '')) {
-          alert(this.newWordList[i].word + '的定義還未填寫!');
+          this.$notify({
+            title: '輸入不完全',
+            message: `${this.newWordList[i].word}的定義還未填寫!`,
+            type: 'warning',
+          });
           this.inputErrorExist = true;
           break;
         }
       }
       if (this.newWordList.length < 1) {
-        alert('至少要有一個單字!');
+        this.$notify({
+          title: '輸入不完全',
+          message: '至少要有一個單字!',
+          type: 'warning',
+        });
         this.inputErrorExist = true;
         this.newWordList.push({ word: '', definition: '', answerNum: 0, correctNum: 0 });
       }
@@ -161,7 +173,12 @@ export default {
           .then(originData => {
             if (originData.success) {
               console.log('successfully. ');
-            } else alert('Fail.');
+            } else {
+              this.$message({
+                type: 'error',
+                message: 'FAIL.',
+              });
+            }
           })
           .catch(err => console.error(err));
 
@@ -184,7 +201,12 @@ export default {
             .then(originData => {
               if (originData.success) {
                 console.log('successfully. ');
-              } else alert('Fail.');
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: 'FAIL.',
+                });
+              }
             })
             .catch(err => console.error(err));
         }
@@ -217,7 +239,12 @@ export default {
           .then(originData => {
             if (originData.success) {
               console.log('successfully. ');
-            } else alert('Fail.');
+            } else {
+              this.$message({
+                type: 'error',
+                message: 'FAIL.',
+              });
+            }
           })
           .catch(err => console.error(err));
         await fetch('http://localhost:3002/api/addWord', {
@@ -233,7 +260,12 @@ export default {
           .then(originData => {
             if (originData.success) {
               console.log('successfully. ');
-            } else alert('Fail.');
+            } else {
+              this.$message({
+                type: 'error',
+                message: 'FAIL.',
+              });
+            }
           })
           .catch(err => console.error(err));
 
@@ -250,7 +282,12 @@ export default {
           .then(originData => {
             if (originData.success) {
               console.log('successfully. ');
-            } else alert('Fail.');
+            } else {
+              this.$message({
+                type: 'error',
+                message: 'FAIL.',
+              });
+            }
           })
           .catch(err => console.error(err));
 
@@ -281,7 +318,12 @@ export default {
           .then(originData => {
             if (originData.success) {
               console.log('successfully. ');
-            } else alert('Fail.');
+            } else {
+              this.$message({
+                type: 'error',
+                message: 'FAIL.',
+              });
+            }
           })
           .catch(err => console.error(err));
 
@@ -314,7 +356,12 @@ export default {
               this.wordList.push({ word: originData.data[i].word, definition: originData.data[i].definition });
             }
           }
-        } else alert('Fail.');
+        } else {
+          this.$message({
+            type: 'error',
+            message: 'FAIL.',
+          });
+        }
       })
       .catch(err => console.error(err));
 
@@ -336,7 +383,12 @@ export default {
               tempWordlist.push(originData.data[i]);
             }
           }
-        } else alert('Fail.');
+        } else {
+          this.$message({
+            type: 'error',
+            message: 'FAIL.',
+          });
+        }
       })
       .catch(err => console.error(err));
 
