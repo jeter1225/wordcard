@@ -79,7 +79,7 @@
 	
 	<p style="font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold; float:left; margin-left: 15%;">單字測驗正確率統計:</p>
 	
-	<el-table stripe :data="accuracyList" style="width: 100%; font-size:16px; font-family:Microsoft JhengHei; font-weight: bold; margin-left: 15%;" :row-style="{height:'50px'}">
+	<el-table stripe :data="accuracyList" style="width: 100%; font-size:16px; font-family:Microsoft JhengHei; font-weight: bold; margin-left: 15%;" :row-style="{height:'50px'}" height="350">
 	  <el-table-column prop="word" label="單字" width="180"></el-table-column>
 	  <el-table-column prop="definition" label="中文" width="180"></el-table-column>
 	  <el-table-column prop="correctPercent" label="正確率(%)" width="180"></el-table-column>
