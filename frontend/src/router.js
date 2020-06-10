@@ -9,6 +9,7 @@ import Test from './views/test/index.vue';
 import Page from './components/page/index.vue';
 import Record from './views/record/index.vue';
 import Login from './views/login/index.vue';
+import OfficialWord from './views/official/index.vue';
 
 Vue.use(Router);
 
@@ -60,6 +61,11 @@ const router = new Router({
           path: '/record',
           name: 'record',
           component: Record,
+        },
+        {
+          path: '/official',
+          name: 'official',
+          component: OfficialWord,
         },
       ],
     },

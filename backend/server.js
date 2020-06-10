@@ -228,6 +228,26 @@ router.delete("/deleteWordAccuracy/:user/:wordcardName", (req, res) => {
     }
   );
 });
+router.post("/addOfficialcard", (req, res) => {
+  let wordcard = new Wordcard();
+  const { user, name, numberOfWords } = req.body;
+  if (!user || !name || !numberOfWords) {
+    return res.json({
+      success: false,
+      error: "INVALID INPUTS",
+    });
+  }
+  wordcard.user = user;
+  wordcard.name = name;
+  wordcard.numberOfWords = numberOfWords;
+  wordcard.save((err) => {
+    if (err) {
+      console.log(err);
+      return res.json({ success: false, error: err });
+    }
+    return res.json({ success: true });
+  });
+});
 router.post("/register", userController.registerNewUser);
 router.post("/login", userController.loginUser);
 // router.get("/me", auth, userController.getUserDetails);

@@ -9,7 +9,7 @@
           <div class="homepage_line_color2"></div>
           <el-row>
             <el-col v-for="(card, index) in cardList" :key="index" :span="8" :offset="2" style="margin-top: 100px;">
-            <router-link v-bind:to="{name:'myWord', params:{cardName: card.name, isOfficial: true}}" style="text-decoration:none;">
+            <router-link v-bind:to="{name:'official', params:{cardName: card.name, isOfficial: true}}" style="text-decoration:none;">
               <el-card :body-style="{ padding: '0px' }" shadow="hover" style="background-color:#F2E9E4; border-color:#272727;">
                 <div style="padding: 14px;">
                   <span style="font-size: 40px; font-family:Microsoft JhengHei; font-weight: bold; padding-left: 20px;">{{ card.name }}</span>
