@@ -47,7 +47,7 @@
           <el-button
             type="info"
             style="position:absolute; right:17%; font-size: 20px; font-family:Microsoft JhengHei; font-weight: bold"
-            round
+            round @click="copyCard"
           >收藏單字本</el-button>
         </router-link>
       </div>
@@ -138,6 +138,66 @@ export default {
 		.catch((err) => console.error(err));
 		
 		this.$router.push({name:'myWord', params:{cardName: this.cardName}});
+	},
+	async copyCard() {
+	  var tempWordcard = {user:localStorage.getItem('username'), name:this.cardName, numberOfWords:this.wordList.length};
+		var tempWordlist = [];
+		for (var i = 0; i < this.wordList.length; i++){
+		  tempWordlist.push({user:localStorage.getItem('username'), wordcardName:this.cardName, word:this.wordList[i].word, definition:this.wordList[i].definition});
+		}
+		await fetch("http://localhost:3002/api/addWordcard", {
+			method: 'POST',
+			body: JSON.stringify(tempWordcard),
+			headers: {
+				'Content-Type': 'application/json'
+		}})
+		.then(res => { return res.json() })
+		.then(originData => {
+			if(originData.success) {
+				console.log("successfully. ");
+			}
+			else
+				alert('Fail.');
+		})
+		.catch((err) => console.error(err));	
+		await fetch("http://localhost:3002/api/addWord", {
+			method: 'POST',
+			body: JSON.stringify(tempWordlist),
+			headers: {
+				'Content-Type': 'application/json'
+		}})
+		.then(res => { return res.json() })
+		.then(originData => {
+			if(originData.success) {
+				console.log("successfully. ");
+			}
+			else
+				alert('Fail.');
+		})
+		.catch((err) => console.error(err));
+		
+		tempWordlist = [];
+		for (var i = 0; i < this.wordList.length; i++){
+		  tempWordlist.push({word:this.wordList[i].word, definition:this.wordList[i].definition, answerNum:0, correctNum: 0});
+		}
+		var tempWordAccuracy = {user:localStorage.getItem('username'), wordcardName:this.cardName, accuracyList: tempWordlist}
+		await fetch("http://localhost:3002/api/addWordAccuracy", {
+			method: 'POST',
+			body: JSON.stringify(tempWordAccuracy),
+			headers: {
+				'Content-Type': 'application/json'
+		}})
+		.then(res => { return res.json() })
+		.then(originData => {
+			if(originData.success) {
+				console.log("successfully. ");
+			}
+			else
+				alert('Fail.');
+		})
+		.catch((err) => console.error(err));
+		
+		this.$router.push("/word");
 	}
   },
   async mounted() {
