@@ -209,7 +209,7 @@ export default {
         this.result.correctPercent = Math.round((100 * this.result.correctNum) / this.result.answerNum);
         var tempLength = this.questionList.length;
         for (var i = this.result.answerNum; i < tempLength; i++) {
-          this.questionList.splice(i, 1);
+          this.questionList.splice(this.result.answerNum, 1);
         }
         this.showResult = 1;
         this.addTest();
