@@ -3,12 +3,12 @@
     <div class="dialog-title">Register Account</div>
     <el-row>
       <el-col :offset="5" :span="14" style="margin-top:10px">
-        <el-input v-model="uuid" placeholder="please enter your name"></el-input>
+        <el-input v-model="uuid" placeholder="請輸入使用者名稱"></el-input>
       </el-col>
     </el-row>
     <el-row>
       <el-col :offset="5" :span="14" style="margin-top:10px">
-        <el-input v-model="password" placeholder="please enter your password" show-password></el-input>
+        <el-input v-model="password" placeholder="請輸入密碼" show-password></el-input>
       </el-col>
     </el-row>
     <el-row style="margin-top: 10px">

@@ -6,22 +6,35 @@
         :span="8"
         style="display:flex; justify-content:center; align-items: center;"
       >
-        <div>Login to Create your own WordCard</div>
+        <div
+          style="font-size: 20px; background-color: #4A4E69; width: 100%; border-radius: 40px; display:flex; justify-content:center;align-items: center; height: 50px"
+        >
+          <div style="color: white">SDM專用單字小卡系統</div>
+        </div>
+      </el-col>
+    </el-row>
+    <el-row style="margin-top:40px">
+      <el-col
+        :offset="8"
+        :span="8"
+        style="display:flex; justify-content:center; align-items: center;"
+      >
+        <div>登入以創建自己的單字小卡</div>
       </el-col>
     </el-row>
     <el-row>
       <el-col :offset="8" :span="8" style="margin-top:10px">
-        <el-input v-model="uuid" placeholder="please enter your username"></el-input>
+        <el-input v-model="uuid" placeholder="請輸入使用者名稱"></el-input>
       </el-col>
     </el-row>
     <el-row>
       <el-col :offset="8" :span="8" style="margin-top:10px">
-        <el-input v-model="password" placeholder="please enter your password" show-password></el-input>
+        <el-input v-model="password" placeholder="請輸入密碼" show-password></el-input>
       </el-col>
     </el-row>
     <el-row style="margin-top: 10px">
       <el-col :offset="11" :span="2">
-        <el-button type="primary" plain @click="login">Login</el-button>
+        <el-button type="primary" plain @click="login">登入</el-button>
       </el-col>
     </el-row>
     <el-row>
@@ -31,8 +44,8 @@
         style="display: flex; justify-content:center;align-items: center"
       >
         <div>
-          Dont have an account??
-          <el-button @click="registerVisible = true">Click Here</el-button>
+          還沒有帳號嗎？ 趕緊點及右側按鈕
+          <el-button @click="registerVisible = true">創建帳號</el-button>
         </div>
       </el-col>
     </el-row>
@@ -72,10 +85,11 @@ export default {
           // console.log(res.err);
           if (res.err) {
             // console.log("dejie");
-            this.$message.error(
-              `something's wrong with login
-            maybe check again your password`
-            );
+            this.$message.error({
+              type: 'error',
+              message: `something's wrong with login maybe check again your password`,
+              showClose: true,
+            });
             window.localStorage.removeItem('username');
             return;
           } else {
